@@ -10,38 +10,61 @@ import { Subscription } from 'rxjs';
 export class OrcamentoComponent implements OnInit, OnDestroy {
 
   protected inscricao: Subscription;
+  protected padraoTipoPessoa = true;
+  protected statusEnvioFormulario = false;
+  protected servicoEscolhido = false;
+  protected ativo = [false, false, false];
+
   // painel de aviso
   protected aviso = {
     ativo: null,
     mensagem: '',
   };
-
-  // campos e detalhes do formulário de orcamento
+  // preenchimento dos campos
   protected formulario = {
     titulo: '',
     descricao: '',
-    pessoa: true,
-    envio: false,
     servicos: {
       titulo: '',
       tiposDeServicos: [],
-      imgs: [],
-      escolha: null,
+      imagens: [],
     }
   };
+  protected segmento = [];
+  protected mensagemDeSucesso = {
+    titulo: '',
+    subtitulo: '',
+  };
 
-  // combo-box de segmentos do formulario
-  protected segmentos = [];
-
-  // titulo da parte da estampa do formulario
-  protected detalhamento = '';
+  protected formularioCliente = {
+    nome: '',
+    email: '',
+    telefoneFixo: [],
+    celular: [],
+    empresa: '',
+    tipoPessoa: {
+      tipo: '',
+      numero: '',
+    },
+    segmento: '',
+    servicoEscolhido: '',
+    detalhamento: {
+      largura: Number(null),
+      altura: Number(null),
+      quantidade: Number(null),
+      cor: String('#ffffff'),
+      mensagem: String(''),
+      anexo: String(),
+    }
+  };
 
   constructor(private http: OrcamentoService) { }
 
   ngOnInit() {
-    this.inscricao = this.http.getOrcamentoAll().subscribe((res) => {
+    this.inscricao = this.http.getOrcamentoAll().subscribe(
+      (res) => {
       const dados = res[0];
-
+      console.log(dados);
       // painel de aviso
       this.aviso.ativo = dados.aviso.ativo;
       this.aviso.mensagem = dados.aviso.mensagem;
@@ -51,27 +74,84 @@ export class OrcamentoComponent implements OnInit, OnDestroy {
       this.formulario.descricao = dados.formulario.descricao;
       this.formulario.servicos.titulo = dados.formulario.servicos.titulo;
       this.formulario.servicos.tiposDeServicos = dados.formulario.servicos.tiposDeServicos;
-      this.formulario.servicos.imgs = dados.formulario.servicos.imagens;
+      this.formulario.servicos.imagens = dados.formulario.servicos.imagens;
+
+      this.mensagemDeSucesso = dados.mensagemDeSucesso;
 
       // combo-box de segmentos do formulario
-      this.segmentos = dados.formulario.segmento;
-      this.detalhamento = dados.formulario.detalhamento;
-    });
+      this.segmento = dados.segmento;
+
+      this.adicionaMaisTelefoneFixo();
+      this.adicionaMaisCelular();
+      },
+      (erro) => {
+        console.log('Não pode conectar, verifique sua conexão com a internet e tente novamente');
+      },
+      () => {
+        console.log('Carregado com sucesso!');
+      }
+    );
   }
   ngOnDestroy(): void {
     this.inscricao.unsubscribe();
   }
-  tipoPessoa() {
-    this.formulario.pessoa = !this.formulario.pessoa;
+  trackByIndex(index: number): any {
+    return index;
   }
-  escolhaDoServico(id: number) {
-    this.formulario.servicos.escolha = id;
-    console.log(this.formulario.servicos.escolha);
+
+  adicionaMaisTelefoneFixo() {
+    this.formularioCliente.telefoneFixo.push(null);
   }
+  adicionaMaisCelular() {
+    this.formularioCliente.celular.push(null);
+  }
+
+  trocaTipoPessoa() {
+    this.padraoTipoPessoa = !this.padraoTipoPessoa;
+  }
+
+  escolhaSegmento(segmento: string) {
+    this.formularioCliente.segmento = segmento;
+    console.log(this.formularioCliente.segmento); // concertar
+  }
+  escolhaTipoServico(servico: string) {
+    this.formularioCliente.servicoEscolhido = servico;
+    this.servicoEscolhido = true;
+  }
+  ativaOpcao(indice: number) {
+    this.ativo[indice] = true;
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < this.ativo.length; i++) {
+      if (this.ativo[i] !== this.ativo[indice]) {
+        this.ativo[i] = false;
+      }
+    }
+  }
+  testando() {
+    console.log(this.formularioCliente);
+  }
+
   enviaFormulario() {
-    this.formulario.envio = !this.formulario.envio;
-    setTimeout(() => {
-      this.formulario.envio = !this.formulario.envio;
-    }, 7000);
+    if (this.padraoTipoPessoa === true) {
+      this.formularioCliente.tipoPessoa.tipo = 'cnpj';
+    } else {
+      this.formularioCliente.tipoPessoa.tipo = 'cpf';
+    }
+    const docs = { formularioCliente: this.formularioCliente };
+
+    this.inscricao = this.http.setOrcamentoClienteAll(docs).subscribe(
+      (resolve) => {
+        this.statusEnvioFormulario = true;
+        setTimeout(() => {
+          this.statusEnvioFormulario = false;
+        }, 7000);
+      },
+      (erro) => {
+        this.statusEnvioFormulario = false;
+      },
+      () => {
+        console.log('Cliente cadastrado com sucesso!');
+      }
+    );
   }
 }

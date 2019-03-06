@@ -1,13 +1,16 @@
-<section style="text-align: center">
-  <img src={{logo}} alt="logo estamparia pegadas" width="50px"/>
-  <button
-    *ngFor="let botao of menus.botoes; let i; of: index"
-    fxLayout="row"
-    fxLayoutAlign="space-evenly center"
-    mat-button
-    color="primary"
-    [routerLink]="botao"
-  >
-    {{ botao }}
-  </button>
+<section>
+  <a (click)="ativaMenuMobile()" class="botao-inicio">&#9776;</a>
+  <article>
+    <div [class.flex-container]="!menuMobile" [class.flex-container-mobile]="menuMobile">
+      <img class="logo" src="{{ logo }}" alt="logo estamparia pegadas" />
+      <button
+        *ngFor="let botao of menus.botoes; let i; of: index"
+        class="navegacao"
+        mat-button
+        [routerLink]="botao"
+      >
+        {{ botao }}
+      </button>
+    </div>
+  </article>
 </section>

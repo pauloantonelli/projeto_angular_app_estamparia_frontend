@@ -1,0 +1,19 @@
+* {
+  box-sizing: border-box;
+  text-align: center;
+}
+body {
+  margin: 0;
+}
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+
+}
+.flex-slide {
+  flex: 100%;
+  padding: 10px;
+}
+.listas_flex {
+  list-style: none;
+}

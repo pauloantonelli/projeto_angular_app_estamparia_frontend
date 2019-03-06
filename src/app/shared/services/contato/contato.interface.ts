@@ -11,4 +11,13 @@ export interface ContatoInterface {
     cep: string;
     estado: string;
   };
+  mensagem: {
+    nome: string,
+    email: string,
+    tipoPessoa: {
+      tipo: string,
+      numero: string,
+    },
+    corpoMensagem: string,
+  };
 }

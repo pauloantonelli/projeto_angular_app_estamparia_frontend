@@ -12,22 +12,71 @@
 
   <br />
 
-  <form *ngIf="formulario.envio === false; else formEnvioSucesso">
-    <input type="text" placeholder="Nome" required />
-    <input type="email" placeholder="Email" required />
-    <input type="tel" placeholder="Telefone Fixo" />
-    <input type="tel" placeholder="Celular - Preferência Whatsapp" />
-    <input type="text" placeholder="Empresa" />
+  <article *ngIf="statusEnvioFormulario === false; else formEnvioSucesso">
+    <input
+      type="text"
+      placeholder="Nome"
+      [(ngModel)]="formularioCliente.nome"
+      required
+    />
+    <input
+      type="email"
+      placeholder="Email"
+      [(ngModel)]="formularioCliente.email"
+      required
+    />
+    <input
+      *ngFor="
+        let telefone of formularioCliente.telefoneFixo;
+        let i = index;
+        trackBy: trackByIndex
+      "
+      type="tel"
+      placeholder="Telefone Fixo"
+      [(ngModel)]="formularioCliente.telefoneFixo[i]"
+    />
+    <button (click)="adicionaMaisTelefoneFixo()">Outro Telefone</button>
+    <input
+      *ngFor="
+        let numero of formularioCliente.celular;
+        let i = index;
+        trackBy: trackByIndex
+      "
+      type="tel"
+      placeholder="Celular - Preferência Whatsapp"
+      [(ngModel)]="formularioCliente.celular[i]"
+      required
+    />
+    <button (click)="adicionaMaisCelular()">Outro Celular</button>
+    <input
+      type="text"
+      placeholder="Empresa"
+      [(ngModel)]="formularioCliente.empresa"
+    />
     <p>Fisica</p>
-    <button mat-button color="primary" (click)="tipoPessoa()">
+    <button mat-button color="primary" (click)="trocaTipoPessoa()">
       Pessoa fisica ou juridica?
     </button>
     <p>Juridica *DEFINIR COMO PREFERIDO NO SLIDER TOOGLE</p>
-    <input *ngIf="formulario.pessoa === false" type="text" placeholder="CPF" />
-    <input *ngIf="formulario.pessoa === true" type="text" placeholder="CNPJ" />
+    <input
+      *ngIf="padraoTipoPessoa === false"
+      type="text"
+      placeholder="CPF"
+      [(ngModel)]="formularioCliente.tipoPessoa.numero"
+    />
+    <input
+      *ngIf="padraoTipoPessoa === true"
+      type="text"
+      placeholder="CNPJ"
+      [(ngModel)]="formularioCliente.tipoPessoa.numero"
+    />
     <select>
       <option>Segmento</option>
-      <option *ngFor="let segmento of segmentos">{{ segmento }}</option>
+      <option
+        *ngFor="let escolha of segmento"
+        (click)="escolhaSegmento(escolha)"
+        >{{ escolha }}</option
+      >
     </select>
 
     <br />
@@ -35,12 +84,22 @@
     <article>
       <h2>{{ formulario.servicos.titulo }}</h2>
       <div
-        (click)="escolhaDoServico(i)"
-        *ngFor="let titulo of formulario.servicos.tiposDeServicos; let i = index"
+        *ngFor="
+          let titulo of formulario.servicos.tiposDeServicos;
+          let i = index
+        "
       >
-        <h4>{{ titulo }}</h4>
+        <h4>{{ formulario.servicos.tiposDeServicos[i] }}</h4>
         <div>
-          <img src="{{ formulario.servicos.imgs[i] }}" alt="" width="20%" />
+          <img
+            (click)="escolhaTipoServico(titulo); ativaOpcao(i)"
+            [class.escolhaServicos]="ativo[i]"
+            [class.servicoDisponivel]="!ativo[i]"
+            style="cursor: pointer"
+            src="{{ formulario.servicos.imagens[i] }}"
+            alt=""
+            width="20%"
+          />
         </div>
       </div>
     </article>
@@ -48,34 +107,47 @@
     <br />
 
     <article>
-      <h2>{{ detalhamento }}</h2>
-      <form>
-        <input type="number" placeholder="Largura" />
-        <input type="number" placeholder="Altura" />
-        <input type="number" placeholder="Quantidade" min="300" />
-        <p>Cor</p>
-        <input type="color" placeholder="Cor" value="000000" />
-        <textarea placeholder="Mensagem"></textarea>
-        <p>Anexar refêrencia da estampa</p><input type="file"/>
-      </form>
+      <h2>Detalhamento técnico da estampa</h2>
+      <p>Largura (Metros)</p>
+      <input
+        type="number"
+        [(ngModel)]="formularioCliente.detalhamento.largura"
+      />
+      <p>Altura (Metros)</p>
+      <input
+        type="number"
+        [(ngModel)]="formularioCliente.detalhamento.altura"
+      />
+      <p>Quantidade pedido minimo</p>
+      <input
+        type="number"
+        min="300"
+        [(ngModel)]="formularioCliente.detalhamento.quantidade"
+      />
+      <p>Cor</p>
+      <input
+        type="color"
+        value="000000"
+        [(ngModel)]="formularioCliente.detalhamento.cor"
+      />
+      <p>Mensagem</p>
+      <textarea
+        [(ngModel)]="formularioCliente.detalhamento.mensagem"
+      ></textarea>
+      <p>Anexar refêrencia da estampa</p>
+      <input type="file" [(ngModel)]="formularioCliente.detalhamento.anexo" />
     </article>
 
     <br />
 
-    <button
-      mat-button
-      color="primary"
-      (click)="enviaFormulario()"
-      [routerLink]="['orcamento']"
-    >
+    <button mat-button color="primary" (click)="enviaFormulario(); testando()">
       Enviar pedido de orçamento
     </button>
-  </form>
+  </article>
 
   <!--Elemento de confirmação do envio do formulário-->
   <ng-template #formEnvioSucesso>
-    <h3>Já Recebemos seu orçamento!</h3>
-    <p>já ja responderemos de volta, aguarde.</p>
+    <h3>{{ mensagemDeSucesso.titulo }}</h3>
+    <p>{{ mensagemDeSucesso.subtitulo }}</p>
   </ng-template>
-
 </section>

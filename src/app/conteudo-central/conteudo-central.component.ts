@@ -9,39 +9,34 @@ import { Subscription } from 'rxjs';
 })
 export class ConteudoCentralComponent implements OnInit, OnDestroy {
 
-  // avisos
   protected aviso = {
     ativo: null,
     mensagem: '',
   };
 
-  // titulo e subtitulo slide
   protected titulo = '';
   protected subtitulo = '';
 
-  // imgs slide
-  protected imgs = [];
-
-  // area de propaganda 01
-  protected propaganda01 = {
-    img: '',
-    titulo: '',
-    descricao: ''
+  protected slides = {
+    titulo: [],
+    subtitulo: [],
+    imagens: [],
   };
-  protected propaganda02 = {
+
+  protected propaganda01 = {
+    imagem: '',
     titulo: '',
+    descricao: '',
+    subtitulo: '',
     lista: [],
     btnTxt: '',
   };
 
-  // area de propaganda 02
-  protected propaganda03 = {
-    img: '',
+  protected propaganda02 = {
+    imagem: '',
     titulo: '',
-    descricao: ''
-  };
-  protected propaganda04 = {
-    titulo: '',
+    descricao: '',
+    subtitulo: '',
     lista: [],
     btnTxt: '',
   };
@@ -51,38 +46,26 @@ export class ConteudoCentralComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.inscricao = this.http.getHomeAll().subscribe((res) => {
+    this.inscricao = this.http.getHomeAll().subscribe(
+      (res) => {
       const dados = res[0];
-      // avisos
-      this.aviso.ativo = dados.aviso.ativo;
-      this.aviso.mensagem = dados.aviso.mensagem;
 
-      // titulo e subtitulo slide
-      this.titulo = dados.slide.titulo;
-      this.subtitulo = dados.slide.subtitulo;
+      this.aviso = dados.aviso;
 
-      // imgs slide
-      this.imgs = dados.slide.imagens; // resolver questao xxs
+      this.titulo = dados.titulo;
+      this.subtitulo = dados.subtitulo;
 
-      // area de propaganda 01
-      this.propaganda01.img = dados.propaganda01.imagem;
-      this.propaganda01.titulo = dados.propaganda01.titulo;
-      this.propaganda01.descricao = dados.propaganda01.descricao;
-      this.propaganda02.titulo = dados.propaganda02.titulo;
-      this.propaganda02.lista = dados.propaganda02.lista;
-      this.propaganda02.btnTxt = dados.propaganda02.btnTxt;
+      this.slides = dados.slides;
 
-      // area de propaganda 02
-      this.propaganda03.img = dados.propaganda03.imagem;
-      this.propaganda03.titulo = dados.propaganda03.titulo;
-      this.propaganda03.descricao = dados.propaganda03.descricao;
-      this.propaganda04.titulo = dados.propaganda04.titulo;
-      this.propaganda04.lista = dados.propaganda04.lista;
-      this.propaganda04.btnTxt = dados.propaganda04.btnTxt;
+      this.propaganda01 = dados.propaganda01;
+
+      this.propaganda02 = dados.propaganda02;
     });
   }
   ngOnDestroy(): void {
     this.inscricao.unsubscribe();
   }
-
+  trackByIndex(index: number): any {
+    return index;
+  }
 }

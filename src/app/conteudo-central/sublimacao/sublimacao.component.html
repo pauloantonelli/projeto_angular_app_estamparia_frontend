@@ -5,16 +5,16 @@
   </section>
 
   <!--imagem principal-->
-  <div class="mySlides fade">
-    <h1 class="numbertext">{{ poster.titulo }}</h1>
-    <img src="{{ poster.imagem }}" width="100%" />
-    <h2 class="text">{{ poster.descricao }}</h2>
+  <div *ngFor="let post of poster.titulo; let i = index" class="mySlides fade">
+    <h1 class="numbertext">{{ poster.titulo[i] }}</h1>
+    <img src="{{ poster.imagem[i] }}" width="100%" />
+    <h2 class="text">{{ poster.descricao[i] }}</h2>
   </div>
 </section>
-<br />
-<!--propaganda 01-->
-<section>
-  <img src="{{ propaganda01.imagem }}" alt="propaganda-imagem" width="50%"/>
-  <h3>{{ propaganda01.titulo }}</h3>
-  <p>{{ propaganda01.descricao }}</p>
+<hr />
+<!--propaganda-->
+<section *ngFor="let prop of propaganda.titulo; let i = index">
+  <img src="{{ propaganda.imagem[i] }}" alt="propaganda-imagem" width="50%" />
+  <h3>{{ propaganda.titulo[i] }}</h3>
+  <p>{{ propaganda.descricao[i] }}</p>
 </section>

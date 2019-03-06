@@ -16,19 +16,20 @@ export class SublimacaoComponent implements OnInit, OnDestroy {
     mensagem: '',
   };
   protected poster = {
-    titulo: '',
-    imagem: '',
-    descricao: ''
+    titulo: [],
+    imagem: [],
+    descricao: [],
   };
-  protected propaganda01 = {
-    imagem:  '',
-    titulo: '',
-    descricao: ''
+  protected propaganda = {
+    imagem:  [],
+    titulo: [],
+    descricao: [],
   };
   constructor(private http: SublimacaoService) { }
 
   ngOnInit() {
-    this.inscricao = this.http.getSublimacaoAll().subscribe((res) => {
+    this.inscricao = this.http.getSublimacaoAll().subscribe(
+      (res) => {
       const dados = res[0];
 
       this.aviso.ativo = dados.aviso.ativo;
@@ -38,9 +39,9 @@ export class SublimacaoComponent implements OnInit, OnDestroy {
       this.poster.imagem = dados.poster.imagem;
       this.poster.descricao = dados.poster.descricao;
 
-      this.propaganda01.imagem = dados.propaganda01.imagem;
-      this.propaganda01.titulo = dados.propaganda01.titulo;
-      this.propaganda01.descricao = dados.propaganda01.descricao;
+      this.propaganda.imagem = dados.propaganda.imagem;
+      this.propaganda.titulo = dados.propaganda.titulo;
+      this.propaganda.descricao = dados.propaganda.descricao;
     });
   }
   ngOnDestroy(): void {

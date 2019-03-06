@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { BaseUrlService } from '../../baseurl.service';
-import { MenuInterface } from './menu.interface';
+import { RodapeInterface } from '../rodape/rodape.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MenuService {
+export class PreRodapeService {
 
   constructor(private http: HttpClient, private url: BaseUrlService) { }
-  getMenuAll() {
-    return this.http.get<MenuInterface>(this.url.baseUrl() + 'menu/todos');
+
+  getPreRodapeAll(): any {
+    return this.http.get<RodapeInterface>(this.url.baseUrl() + 'pre-rodape/todos');
   }
 }

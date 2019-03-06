@@ -11,6 +11,6 @@ export class SublimacaoService {
 
   constructor(private url: BaseUrlService, private http: HttpClient) { }
   getSublimacaoAll(): any {
-    return this.http.get<SublimacaoInterface>(this.url.baseUrl() + '/sublimacao/todos');
+    return this.http.get<SublimacaoInterface>(this.url.baseUrl() + 'sublimacao/todos');
   }
 }

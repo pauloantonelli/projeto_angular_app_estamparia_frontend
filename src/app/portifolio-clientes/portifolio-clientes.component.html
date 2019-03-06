@@ -1,9 +1,13 @@
 <section>
-    <h1>CLIENTES</h1>
-    <h2>A melhor forma de conhecer a qualidade dos nossos serviços
-        é através daqueles com quem trabalhamos.</h2>
-  </section>
+  <h1>{{ portifolio.titulo }}</h1>
+  <h2>{{ portifolio.subtitulo }}</h2>
+</section>
 
-  <section>
-    <img *ngFor="let img of slide" src="{{ img }}" alt="slide-clientes" width="20%"/>
+<section>
+  <img
+    *ngFor="let imagem of portifolio.imagens"
+    src="{{ imagem }}"
+    alt="slide-clientes"
+    width="20%"
+  />
 </section>

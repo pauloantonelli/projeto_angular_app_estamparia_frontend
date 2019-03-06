@@ -11,32 +11,32 @@
 
 <footer>
   <section>
-    <h2>{{ endereco.rua }} numero {{ endereco.numero }}, bairro {{ endereco.bairro }}, estado {{ endereco.estado }}, CEP: {{ endereco.cep }}</h2>
+    <h2>
+      {{ endereco.rua }} numero {{ endereco.numero }}, bairro
+      {{ endereco.bairro }}, estado {{ endereco.estado }}, CEP:
+      {{ endereco.cep }}
+    </h2>
     <a
-      *ngFor="let icone of redes.link; let i = index"
-      href="{{ redes.link[i] }}"
+      *ngFor="let icone of redesSociais.links;
+      let i = index"
+      href="{{ redesSociais.links[i] }}"
       target="_blank"
     >
-      <img src="{{ redes.icone[i] }}" alt="redes-sociais" />
+      <img src="{{ redesSociais.icones[i] }}" alt="redes-sociais" width="10%"/>
     </a>
   </section>
 
   <section>
-    <h2>Receba promoções e dicas</h2>
-    <p>
-      Cadastre o seu email e receba a newsletter da equipe Dharma, tendências de
-      estampas, dicas sobre sublimação e muito mais!
-    </p>
-    <input type="email" />
-    <button (click)="enviarEnderecoEmailCliente()" mat-button color="primary">
-      Receber as promoções
+    <h2>{{ rodape.titulo }}</h2>
+    <p>{{ rodape.subtitulo }}</p>
+    <input type="email" [(ngModel)]="email" id="email"/>
+    <button (click)="novoCadastroEmailCliente()" mat-button color="primary">
+      {{ rodape.btnTxt }}
     </button>
   </section>
 
-  <section *ngIf="email === true">
-    <p>
-      Cadastro feito com sucesso! Em breve voce receberá novas promoções! Fique
-      ligado ;)
-    </p>
+  <section *ngIf="enviado === true">
+    <p>{{ rodape.sucesso }}</p>
   </section>
+  <hr/>
 </footer>

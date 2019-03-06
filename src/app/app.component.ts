@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-root',
@@ -7,10 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent {
 
-  protected mobile: boolean;
-  public title = 'Estamparia Pegadas';
   constructor() {
-    const plataforma = () => {
+    /*const plataforma = () => {
       if (
         navigator.userAgent.match(/Android/i) ||
         navigator.userAgent.match(/webOS/i) ||
@@ -24,7 +23,6 @@ export class AppComponent {
       } else {
         this.mobile = false;
       }
-    };
-    plataforma();
+    plataforma();*/
   }
 }
