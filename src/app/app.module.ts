@@ -17,13 +17,14 @@ import { PreRodapeModule } from './pre-rodape/pre-rodape.module';
 import { RodapeModule } from './rodape/rodape.module';
 import { AlinhaTituloDirective } from './shared/alinha-titulo.directive';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MostarEsconderMenuMobileDirective } from './shared/directives/mostar-esconder-menu-mobile.directive';
+import { MenuTopoMobileModule } from './menu-topo-mobile/menu-topo-mobile.module';
+import { MostraEscondeSlideDirective } from './shared/diretives/mostra-esconde-slide.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     AlinhaTituloDirective,
-    MostarEsconderMenuMobileDirective
+    MostraEscondeSlideDirective,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +35,7 @@ import { MostarEsconderMenuMobileDirective } from './shared/directives/mostar-es
     HttpClientModule,
     FlexLayoutModule,
     MenuTopoModule,
+    MenuTopoMobileModule,
     ConteudoCentralModule,
     PortifolioClientesModule,
     PreRodapeModule,

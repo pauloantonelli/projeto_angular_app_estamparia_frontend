@@ -5,44 +5,19 @@
 body {
   margin: 0;
 }
-@media screen and (max-width: 768px) {
-  .botao-inicio {
-    display: block;
-  }
-  .flex-container-mobile {
-    display: flex;
-    flex-flow: column wrap;
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: white;
-    background-color: #333;
-  }
-  .logo {
-    width: 100%;
-  }
-  .navegacao {
-    font-size: 1.3rem;
-    font-weight: bold;
-  }
+.flex-container {
+  flex: 70%;
+  color: white;
+  background-color: #333;
 }
-@media screen and (min-width: 769px) {
-  .botao-inicio {
-    display: none;
-  }
-  .flex-container {
-    flex: 70%;
-    color: white;
-    background-color: #333;
-  }
-  .logo {
-    flex: 30%;
-    width: 20%;
-    margin-top: 1.5%;
-    box-shadow: 5px 5px 14px 3px rgba(0,0,0,0.69);
-  }
-  .navegacao {
-    font-size: 2rem;
-    font-weight: bolder;
-    justify-content: center;
-  }
+.logo {
+  flex: 30%;
+  width: 20%;
+  margin-top: 1.5%;
+  box-shadow: 5px 5px 14px 3px rgba(0, 0, 0, 0.69);
+}
+.navegacao {
+  font-size: 2rem;
+  font-weight: bolder;
+  justify-content: center;
 }

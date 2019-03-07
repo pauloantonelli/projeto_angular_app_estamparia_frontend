@@ -4,11 +4,11 @@ import { Subscription } from 'rxjs';
 import { MenuService } from '../shared/services/menu/menu.service';
 
 @Component({
-  selector: 'app-menu-topo',
-  templateUrl: './menu-topo.component.html',
-  styleUrls: ['./menu-topo.component.scss']
+  selector: 'app-menu-topo-mobile',
+  templateUrl: './menu-topo-mobile.component.html',
+  styleUrls: ['./menu-topo-mobile.component.scss']
 })
-export class MenuTopoComponent implements OnInit, OnDestroy {
+export class MenuTopoMobileComponent implements OnInit, OnDestroy {
 
   protected inscricao: Subscription;
   protected logo = {
@@ -17,19 +17,21 @@ export class MenuTopoComponent implements OnInit, OnDestroy {
   protected menus = {
     botoes: ['home', 'sublimacao', 'orcamento', 'contato'],
   };
-
-  constructor(private http: MenuService) {
-
-  }
+  protected menuMobile: boolean;
+  constructor(private http: MenuService) { }
 
   ngOnInit() {
     this.inscricao = this.http.getMenuAll().subscribe((res) => {
       const dados = res[0];
 
       this.logo = dados.logo.imagem;
+      this.menuMobile = false;
     });
   }
   ngOnDestroy(): void {
     this.inscricao.unsubscribe();
+  }
+  ativaMenuMobile() {
+    this.menuMobile = !this.menuMobile;
   }
 }

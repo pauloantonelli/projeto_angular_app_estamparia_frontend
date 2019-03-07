@@ -1,7 +1,6 @@
 <section>
-  <a (click)="ativaMenuMobile()" class="botao-inicio">&#9776;</a>
   <article>
-    <div [class.flex-container]="!menuMobile" [class.flex-container-mobile]="menuMobile">
+    <div class="flex-container">
       <img class="logo" src="{{ logo }}" alt="logo estamparia pegadas" />
       <button
         *ngFor="let botao of menus.botoes; let i; of: index"

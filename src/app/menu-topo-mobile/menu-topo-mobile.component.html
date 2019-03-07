@@ -1,0 +1,27 @@
+<section>
+  <a
+    (click)="ativaMenuMobile()"
+    class="botao-inicio"
+    [ngStyle]="{
+      'backgroundColor': menuMobile ? '#333' : 'white',
+      'color': menuMobile ? 'white' : 'black'
+    }"
+    >&#9776;</a
+  >
+  <article>
+    <div
+      class="flex-container-mobile"
+      [style.display]="menuMobile ? 'block' : 'none'"
+    >
+      <img class="logo" src="{{ logo }}" alt="logo estamparia pegadas" />
+      <button
+        *ngFor="let botao of menus.botoes; let i; of: index"
+        class="navegacao-mobile"
+        mat-button
+        [routerLink]="botao"
+      >
+        {{ botao }}
+      </button>
+    </div>
+  </article>
+</section>

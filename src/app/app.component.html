@@ -1,7 +1,8 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <section>
-  <app-menu-topo></app-menu-topo>
-  <hr />
+  <app-menu-topo *ngIf="pc"></app-menu-topo>
+  <app-menu-topo-mobile *ngIf="mobile"></app-menu-topo-mobile>
+
   <router-outlet></router-outlet>
   <hr />
   <app-portifolio-clientes></app-portifolio-clientes>

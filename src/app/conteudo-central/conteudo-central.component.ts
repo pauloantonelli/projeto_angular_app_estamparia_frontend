@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HomeService } from '../shared/services/home/home.service';
 import { Subscription } from 'rxjs';
+
+import {MatSnackBar} from '@angular/material';
+
+import { HomeService } from '../shared/services/home/home.service';
 
 @Component({
   selector: 'app-conteudo-central',
@@ -8,6 +11,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./conteudo-central.component.scss']
 })
 export class ConteudoCentralComponent implements OnInit, OnDestroy {
+
+  protected indiceSlide = 0;
+  protected slideAtivo: boolean[] = [];
 
   protected aviso = {
     ativo: null,
@@ -42,7 +48,7 @@ export class ConteudoCentralComponent implements OnInit, OnDestroy {
   };
 
   private inscricao: Subscription;
-  constructor(private http: HomeService) {
+  constructor(private http: HomeService, private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -60,6 +66,13 @@ export class ConteudoCentralComponent implements OnInit, OnDestroy {
       this.propaganda01 = dados.propaganda01;
 
       this.propaganda02 = dados.propaganda02;
+
+      if (this.aviso.ativo) {
+        this.snackBar.open(this.aviso.mensagem, 'Fechar', {
+          duration: 60000,
+        });
+      }
+      this.geraSlides(0);
     });
   }
   ngOnDestroy(): void {
@@ -67,5 +80,30 @@ export class ConteudoCentralComponent implements OnInit, OnDestroy {
   }
   trackByIndex(index: number): any {
     return index;
+  }
+
+  anteriorImagem() {
+    this.indiceSlide -= 1;
+    if (this.indiceSlide < 0) {
+      this.indiceSlide = this.slides.imagens.length - 1;
+    }
+    this.geraSlides(this.indiceSlide);
+  }
+  proximaImagem() {
+    this.indiceSlide += 1;
+    if (this.indiceSlide >= this.slides.imagens.length) {
+      this.indiceSlide = 0;
+    }
+    this.geraSlides(this.indiceSlide);
+  }
+
+  geraSlides(indice: number) {
+    this.slideAtual(indice);
+  }
+  slideAtual(indice: number) {
+    for (let i = 0; i < this.slides.imagens.length; i++) {
+        this.slideAtivo[i] = false;
+      }
+    this.slideAtivo[indice] = true;
   }
 }
