@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 import { HomeService } from '../shared/services/home/home.service';
 import { DetectaPlataformaService } from '../shared/services/detecta-plataforma/detecta-plataforma.service';
@@ -17,8 +17,6 @@ export class ConteudoCentralComponent implements OnInit, OnDestroy {
   protected slideAtivo: boolean[] = [];
   protected mobile: boolean;
   protected pc: boolean;
-
-  protected rowSpanSubtituloProp1: number;
 
   protected aviso = {
     ativo: null,

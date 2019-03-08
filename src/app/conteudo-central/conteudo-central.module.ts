@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatButtonModule } from '@angular/material/button';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ConteudoCentralComponent } from './conteudo-central.component';
@@ -23,8 +23,7 @@ import { SublimacaoComponent } from './sublimacao/sublimacao.component';
     CommonModule,
     FormsModule,
     RouterModule,
-    MatGridListModule,
-    MatButtonModule,
+    CarouselModule.forRoot(),
     MatSnackBarModule,
   ],
   exports: [
