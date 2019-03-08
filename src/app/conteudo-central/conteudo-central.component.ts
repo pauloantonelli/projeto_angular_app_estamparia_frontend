@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import {MatSnackBar} from '@angular/material';
 
 import { HomeService } from '../shared/services/home/home.service';
+import { DetectaPlataformaService } from '../shared/services/detecta-plataforma/detecta-plataforma.service';
 
 @Component({
   selector: 'app-conteudo-central',
@@ -14,6 +15,10 @@ export class ConteudoCentralComponent implements OnInit, OnDestroy {
 
   protected indiceSlide = 0;
   protected slideAtivo: boolean[] = [];
+  protected mobile: boolean;
+  protected pc: boolean;
+
+  protected rowSpanSubtituloProp1: number;
 
   protected aviso = {
     ativo: null,
@@ -48,7 +53,13 @@ export class ConteudoCentralComponent implements OnInit, OnDestroy {
   };
 
   private inscricao: Subscription;
-  constructor(private http: HomeService, private snackBar: MatSnackBar) {
+  constructor(
+    private http: HomeService,
+    private snackBar: MatSnackBar,
+    private plataforma: DetectaPlataformaService
+    ) {
+      this.mobile = this.plataforma.mobile;
+      this.pc = this.plataforma.pc;
   }
 
   ngOnInit() {
