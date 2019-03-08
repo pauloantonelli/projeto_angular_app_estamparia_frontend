@@ -41,39 +41,25 @@
     ></textarea>
 
     <br />
-    <button mat-button color="primary" (click)="enviarMensagem()">Enviar Mensagem</button>
+    <button mat-button color="primary" (click)="abrirModal(mensagemSucesso)">Enviar Mensagem</button>
   </article>
 
   <ng-template #mensagemSucesso>
     <h2>Mensagem Enviada com sucesso</h2>
     <p>Recebemos sua mensagem e logo entraremos em contato</p>
   </ng-template>
-</section>
 
-<br />
-
-<section>
-  <h3>Telefones de contato</h3>
-  <p *ngFor="let telefone of telefones" type="tel">{{ telefone }}</p>
-</section>
-
-<br />
-
-<section>
-  <h3>Horário de funcionamento</h3>
-  <p type="text">{{ atendimento.diaDaSemana }}</p>
-  <p type="text">{{ atendimento.horario }}</p>
-</section>
-
-<br />
-
-<section>
-  <h3>Endereço</h3>
-  <p type="text">{{ endereco.rua }}</p>
-  <p type="text">Número {{ endereco.numero }}</p>
-  <p type="text">{{ endereco.bairro }}</p>
-  <p type="text">{{ endereco.cep }}</p>
-  <p type="text">{{ endereco.estado }}</p>
+  <ng-template #mensagemSucesso>
+      <div class="modal-header">
+        <h4 class="modal-title pull-center">Mensagem Enviada com sucesso</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <p>Recebemos sua mensagem e logo entraremos em contato</p>
+        </div>
+    </ng-template>
 </section>
 
 <br />

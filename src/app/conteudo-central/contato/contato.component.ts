@@ -1,6 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ContatoService } from 'src/app/shared/services/contato/contato.service';
+import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
 import { Subscription } from 'rxjs';
+
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+
+import { ContatoService } from 'src/app/shared/services/contato/contato.service';
 
 @Component({
   selector: 'app-contato',
@@ -11,20 +14,7 @@ export class ContatoComponent implements OnInit, OnDestroy {
 
   protected inscricao: Subscription;
   protected envio = false;
-
-  // dados da administracao
-  protected telefones: [];
-  protected atendimento = {
-    diaDaSemana: '',
-    horario: '',
-  };
-  protected endereco = {
-    rua: '',
-    numero: null,
-    bairro: '',
-    cep: '',
-    estado: '',
-  };
+  protected modalRef: BsModalRef;
 
   // mensagem do cliente
   protected mensagem = {
@@ -38,25 +28,9 @@ export class ContatoComponent implements OnInit, OnDestroy {
     corpoMensagem: '',
   };
 
-  constructor(private http: ContatoService) {
-  }
+  constructor(private http: ContatoService, private modalService: BsModalService) {}
 
   ngOnInit() {
-    this.inscricao = this.http.getContatoAll().subscribe(
-      (res) => {
-      const dados = res[0];
-
-      this.telefones = dados.telefones;
-
-      this.atendimento.diaDaSemana = dados.atendimento.diaDaSemana;
-      this.atendimento.horario = dados.atendimento.horario;
-
-      this.endereco.rua = dados.endereco.rua;
-      this.endereco.numero = dados.endereco.numero;
-      this.endereco.bairro = dados.endereco.bairro;
-      this.endereco.cep = dados.endereco.cep;
-      this.endereco.estado = dados.endereco.estado;
-    });
   }
   ngOnDestroy(): void {
     this.inscricao.unsubscribe();
@@ -89,5 +63,8 @@ export class ContatoComponent implements OnInit, OnDestroy {
         console.log('Conexão encerrada com sucesso');
       }
     );
+  }
+  abrirModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
   }
 }

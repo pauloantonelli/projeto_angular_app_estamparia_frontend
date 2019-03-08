@@ -1,0 +1,77 @@
+* {
+  box-sizing: border-box;
+  text-align: center;
+}
+body {
+  margin: 0;
+}
+.imgSlide {
+  display: block;
+  width: 100%;
+  height: 400px;
+}
+/*comeco slide*/
+.caption {
+  color: #f2f2f2;
+  background-color: rgba(3, 3, 3, 0.6);
+  font-size: 3rem;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height: 100px;
+  text-align: center;
+}
+.text {
+  color: #f2f2f2;
+  background-color: rgba(3, 3, 3, 0.3);
+  font-size: 1.5rem;
+  margin: 0;
+  padding: 0 12px 8px 12px;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  text-align: center;
+}
+/*Diminui os textos no mobile*/
+@media only screen and (max-width: 768px) {
+  .imgSlide {
+    height: 180px;
+  }
+  .caption,
+  .text {
+    display: block;
+    font-size: 1rem;
+  }
+}
+/*fim slide*/
+
+/*comeco corpo sblimacao*/
+.flex-container {
+  display: flex;
+  flex-wrap:  wrap;
+}
+.titulo-prop {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 15px;
+}
+.subtitulo-prop {
+  font-size: 1.5rem;
+  font-weight: normal;
+  margin: 0 15px;
+}
+.propagandas {
+  width: 50%
+}
+@media only screen and (max-width: 768px) {
+  .propagandas {
+    width: 100%
+  }
+  .subtitulo-prop {
+    width: 100%;
+  }
+}
+/*final corpo home*/

@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SublimacaoService } from 'src/app/shared/services/sublimacao/sublimacao.service';
 import { Subscription } from 'rxjs';
+
+import { MatSnackBar } from '@angular/material';
+
+import { SublimacaoService } from 'src/app/shared/services/sublimacao/sublimacao.service';
 
 @Component({
   selector: 'app-sublimacao',
@@ -25,7 +28,9 @@ export class SublimacaoComponent implements OnInit, OnDestroy {
     titulo: [],
     descricao: [],
   };
-  constructor(private http: SublimacaoService) { }
+  constructor(
+    private http: SublimacaoService,
+    private snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.inscricao = this.http.getSublimacaoAll().subscribe(
@@ -34,6 +39,9 @@ export class SublimacaoComponent implements OnInit, OnDestroy {
 
       this.aviso.ativo = dados.aviso.ativo;
       this.aviso.mensagem = dados.aviso.mensagem;
+      this.snackBar.open(this.aviso.mensagem, 'Fechar', {
+        duration: 60000,
+      });
 
       this.poster.titulo = dados.poster.titulo;
       this.poster.imagem = dados.poster.imagem;
@@ -46,5 +54,8 @@ export class SublimacaoComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.inscricao.unsubscribe();
+  }
+  trackByIndex(indice: number): any{
+    return indice;
   }
 }

@@ -1,20 +1,37 @@
-<section fxLayout="row" class="slideshow-container">
-  <!--Avisos-->
-  <section *ngIf="aviso.ativo === true">
-    <p>{{ aviso.mensagem }}</p>
-  </section>
-
+<section>
   <!--imagem principal-->
-  <div *ngFor="let post of poster.titulo; let i = index" class="mySlides fade">
-    <h1 class="numbertext">{{ poster.titulo[i] }}</h1>
-    <img src="{{ poster.imagem[i] }}" width="100%" />
-    <h2 class="text">{{ poster.descricao[i] }}</h2>
-  </div>
+  <carousel>
+    <slide
+      *ngFor="let imagem of poster.imagem; let i = index; trackBy: trackByIndex"
+    >
+      <img src="{{ imagem }}" alt="first slide" class="imgSlide" />
+      <div class="carousel-caption d-none d-md-block">
+        <h3 class="caption">{{ poster.titulo[i] }}</h3>
+        <p class="text">{{ poster.descricao[i] }}</p>
+      </div>
+    </slide>
+  </carousel>
 </section>
+
 <hr />
-<!--propaganda-->
-<section *ngFor="let prop of propaganda.titulo; let i = index">
-  <img src="{{ propaganda.imagem[i] }}" alt="propaganda-imagem" width="50%" />
-  <h3>{{ propaganda.titulo[i] }}</h3>
-  <p>{{ propaganda.descricao[i] }}</p>
+
+<!--propagandas-->
+<section
+  *ngFor="let prop of propaganda.titulo; let i = index"
+  class="flex-container"
+>
+  <div class="propagandas">
+    <img
+    src="{{ propaganda.imagem[i] }}"
+    alt="propaganda-imagem"
+    width="90%"
+    />
+  </div>
+  <div class="propagandas">
+    <h3 class="titulo-prop">{{ propaganda.titulo[i] }}</h3>
+    <p class="subtitulo-prop">{{ propaganda.descricao[i] }}</p>
+  </div>
+  <div class="propagandas">
+  </div>
+  <hr />
 </section>
