@@ -1,11 +1,14 @@
-<section>
-  <img src="{{ certificado01.imagem }}" alt="certificacao 1" width="20%"/>
-  <h1>{{ certificado01.titulo }}</h1>
-  <p>{{ certificado01.descricao }}</p>
-</section>
-
-<section>
-  <img src="{{ certificado02.imagem }}" alt="certificacao 2" width="20%"/>
-  <h1>{{ certificado02.titulo }}</h1>
-  <p>{{ certificado02.descricao }}</p>
+<section class="flex-container">
+  <article class="propagandas">
+    <div>
+      <img src="{{ certificado01.imagem }}" alt="certificacao 1" width="90%" />
+      <h1 class="titulo-prop">{{ certificado01.titulo }}</h1>
+      <p class="subtitulo-prop">{{ certificado01.descricao }}</p>
+    </div>
+  </article>
+  <article class="propagandas">
+    <img src="{{ certificado02.imagem }}" alt="certificacao 2" width="90%" />
+    <h1 class="titulo-prop">{{ certificado02.titulo }}</h1>
+    <p class="subtitulo-prop">{{ certificado02.descricao }}</p>
+  </article>
 </section>
