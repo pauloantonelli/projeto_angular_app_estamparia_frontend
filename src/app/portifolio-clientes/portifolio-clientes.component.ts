@@ -16,6 +16,9 @@ export class PortifolioClientesComponent implements OnInit, OnDestroy {
     imagens: [],
   };
 
+  myInterval = 4000;
+  activeSlideIndex = 0;
+
   constructor(private http: PortifolioClientesService) { }
 
   ngOnInit() {

@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+
 import { PortifolioClientesComponent } from './portifolio-clientes.component';
 
 @NgModule({
@@ -7,7 +10,8 @@ import { PortifolioClientesComponent } from './portifolio-clientes.component';
     PortifolioClientesComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    CarouselModule.forRoot(),
   ],
   exports: [
     PortifolioClientesComponent
