@@ -6,7 +6,8 @@ import { RodapeService } from '../shared/services/rodape/rodape.service';
 @Component({
   selector: 'app-rodape',
   templateUrl: './rodape.component.html',
-  styleUrls: ['./rodape.component.scss']
+  styleUrls: ['./rodape.component.scss'],
+  preserveWhitespaces: true,
 })
 export class RodapeComponent implements OnInit, OnDestroy {
 

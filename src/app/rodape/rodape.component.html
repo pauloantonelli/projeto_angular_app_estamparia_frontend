@@ -1,38 +1,50 @@
-<section>
-  <h1>Telefone</h1>
-  <p *ngFor="let telefone of telefones">{{ telefone }}</p>
-</section>
+<section class="flex-container">
+<article class="propagandas">
+  <alert type="info">
+    <h1>Telefone</h1>
+    <p *ngFor="let telefone of telefones">{{ telefone }}</p>
+  </alert>
+</article>
 
-<section>
-  <h2>Horário de Atendimento</h2>
-  <h3>{{ atendimento.diaDaSemana }}</h3>
-  <p>{{ atendimento.horario }}</p>
+<article class="propagandas">
+    <alert type="info">
+      <h2>Horário de Atendimento</h2>
+      <h3>{{ atendimento.diaDaSemana }}</h3>
+      <p>{{ atendimento.horario }}</p>
+    </alert>
+</article>
 </section>
-
 <footer>
   <section>
-    <h2>
-      {{ endereco.rua }} numero {{ endereco.numero }}, bairro
-      {{ endereco.bairro }}, estado {{ endereco.estado }}, CEP:
-      {{ endereco.cep }}
-    </h2>
-    <a
-      *ngFor="let icone of redesSociais.links;
-      let i = index"
-      href="{{ redesSociais.links[i] }}"
-      target="_blank"
-    >
-      <img src="{{ redesSociais.icones[i] }}" alt="redes-sociais" width="10%"/>
-    </a>
+      <alert type="info">
+        <h2>
+          {{ endereco.rua }} numero {{ endereco.numero }}, bairro
+          {{ endereco.bairro }}, estado {{ endereco.estado }}, CEP:
+          {{ endereco.cep }}
+        </h2>
+      </alert>
+        <alert type="info">
+        <p>REDES SOCIAIS</p>
+        <a
+          *ngFor="let icone of redesSociais.links;
+          let i = index"
+          href="{{ redesSociais.links[i] }}"
+          target="_blank"
+        >
+          <img src="{{ redesSociais.icones[i] }}" alt="redes-sociais" class="icones"/>
+        </a>
+      </alert>
   </section>
 
   <section>
-    <h2>{{ rodape.titulo }}</h2>
-    <p>{{ rodape.subtitulo }}</p>
-    <input type="email" [(ngModel)]="email" id="email"/>
-    <button (click)="novoCadastroEmailCliente()" mat-button color="primary">
-      {{ rodape.btnTxt }}
-    </button>
+      <alert type="warning">
+        <h2>{{ rodape.titulo }}</h2>
+        <p>{{ rodape.subtitulo }}</p>
+        <input type="email" [(ngModel)]="email" id="email" placeholder="Digite seu email de contato"/>
+        <button (click)="novoCadastroEmailCliente()" class="btn btn-primary">
+          {{ rodape.btnTxt }}
+        </button>
+      </alert>
   </section>
 
   <section *ngIf="enviado === true">

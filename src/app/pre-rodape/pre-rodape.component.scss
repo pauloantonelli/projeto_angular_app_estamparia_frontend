@@ -21,3 +21,8 @@ body {
   font-size: 1rem;
   font-weight: bold;
 }
+@media screen and (max-width: 768px) {
+  .propagandas {
+    width: 100%
+  }
+}

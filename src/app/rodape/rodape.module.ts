@@ -1,8 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RodapeComponent } from './rodape.component';
-import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+
+import { AlertModule } from 'ngx-bootstrap';
+import { ButtonsModule } from 'ngx-bootstrap';
+
+import { RodapeComponent } from './rodape.component';
+
 
 @NgModule({
   declarations: [
@@ -11,7 +15,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     FormsModule,
-    MatButtonModule
+    AlertModule.forRoot(),
+    ButtonsModule.forRoot(),
   ],
   exports: [
     RodapeComponent
