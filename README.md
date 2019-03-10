@@ -1,4 +1,11 @@
-# Frontend do projeto sistema para estamparia
+# Projeto Estamparia - Frontend
+
+Painel Administrativo Angular 2+: https://github.com/pauloantonelli/projeto_angular_app_estamparia_painel_administrativo
+
+Backend NodeJS: https://github.com/pauloantonelli/projeto_angular_app_estamparia_backend
+
+
+# Detalhes técnicos:
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.1.
 
