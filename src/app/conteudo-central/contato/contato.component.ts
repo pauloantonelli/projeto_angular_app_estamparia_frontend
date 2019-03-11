@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { MatSnackBar } from '@angular/material';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { ContatoService } from 'src/app/shared/services/contato/contato.service';
+import { OrcamentoService } from 'src/app/shared/services/orcamento/orcamento.service';
 
 @Component({
   selector: 'app-contato',
@@ -13,8 +15,12 @@ import { ContatoService } from 'src/app/shared/services/contato/contato.service'
 export class ContatoComponent implements OnInit, OnDestroy {
 
   protected inscricao: Subscription;
-  protected envio = false;
   protected modalRef: BsModalRef;
+
+  protected mensagemDeSucesso = {
+    titulo: '',
+    subtitulo: '',
+  };
 
   protected tipoPessoa = {
     estado: true,
@@ -33,10 +39,29 @@ export class ContatoComponent implements OnInit, OnDestroy {
     corpoMensagem: '',
   };
 
-  constructor(private http: ContatoService, private modalService: BsModalService) {}
+  constructor(
+    private http: ContatoService,
+    private recuperaMensagemSucessoServidor: OrcamentoService,
+    private snackBar: MatSnackBar,
+    private modalService: BsModalService) {}
 
   ngOnInit() {
     this.tipoPessoa.tipo = 'Pessoa Física';
+    this.inscricao = this.recuperaMensagemSucessoServidor.getOrcamentoAll().subscribe(
+      (response) => {
+        const dados = response[0];
+
+        this.mensagemDeSucesso = dados.mensagemDeSucesso;
+      },
+      (erro) => {
+        this.snackBar.open('Não pode conectar, verifique sua conexão com a internet e tente novamente', 'Fechar', {
+          duration: 60000,
+        });
+      },
+      () => {
+        console.log('Carregado com sucesso!');
+      }
+    );
   }
   ngOnDestroy(): void {
     this.inscricao.unsubscribe();
@@ -49,34 +74,49 @@ export class ContatoComponent implements OnInit, OnDestroy {
       this.tipoPessoa.tipo = 'Pessoa Juridica';
     }
   }
-  enviarMensagem() {
+  enviarMensagem(mensagemModal: any) {
+    if (this.tipoPessoa.estado === true) {
+      this.tipoPessoa.tipo = 'cnpj';
+    } else {
+      this.tipoPessoa.tipo = 'cpf';
+    }
+
+    if (this.mensagem.nome != '' && this.mensagem.email != '') {
+      /*if (this.validarEmail == true) {
+        VALIDAR EMAIL E SO DEPOIS EXECUTAR OQUE TEM ABAIXO
+      } ELSE {
+        EXECUTAR O MODAL INFORMANDO DOS CAMPOS OBRIGATORIOS
+      }*/
     const docs = { mensagem: this.mensagem };
-    console.log(docs);
+
     this.inscricao = this.http.setNovaMensagem(docs).subscribe(
       (response) => {
-        this.envio = true;
-        setTimeout(() => {
-          this.envio = false;
-          this.mensagem = {
-            nome: '',
-            email: '',
-            telefone: '',
-            tipoPessoa: {
-              tipo: '',
-              numero: '',
-            },
-            corpoMensagem: '',
-          };
-        }, 8000);
-        console.log('Enviado com sucesso');
+        this.abrirModal(mensagemModal);
+        this.mensagem = {
+          nome: '',
+          email: '',
+          telefone: '',
+          tipoPessoa: {
+            tipo: '',
+            numero: '',
+          },
+          corpoMensagem: '',
+        };
       },
       (erro) => {
-        console.log('Verifique sua conexão com a internet e tente novamente!');
+        this.mensagemDeSucesso.titulo = 'Mensagem NÃO enviada!';
+        this.mensagemDeSucesso.subtitulo = 'Verifique sua conexão com a internet e tente novamente!';
+        this.abrirModal(mensagemModal);
       },
       () => {
         console.log('Conexão encerrada com sucesso');
       }
-    );
+      );
+    } else {
+      this.mensagemDeSucesso.titulo = 'Mensagem NÃO enviada!';
+      this.mensagemDeSucesso.subtitulo = 'Preencha corretamente os campos obrigatórios e tente novamente';
+      this.abrirModal(mensagemModal)
+    }
   }
   abrirModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);

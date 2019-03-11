@@ -1,7 +1,12 @@
 <section>
   <article>
     <div class="flex-container">
-      <img class="logo" src="{{ logo }}" alt="logo estamparia pegadas" />
+      <img
+        [routerLink]="['/home']"
+        class="logo"
+        src="{{ logo }}"
+        alt="logo estamparia pegadas"
+        style="cursor: pointer"/>
       <button
         *ngFor="let botao of menus.botoes; let i; of: index"
         class="navegacao"

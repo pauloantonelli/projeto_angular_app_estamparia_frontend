@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { MatSnackBar } from '@angular/material';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { OrcamentoService } from 'src/app/shared/services/orcamento/orcamento.service';
 
@@ -13,8 +14,9 @@ import { OrcamentoService } from 'src/app/shared/services/orcamento/orcamento.se
 export class OrcamentoComponent implements OnInit, OnDestroy {
 
   protected inscricao: Subscription;
+  protected modalRef: BsModalRef;
+
   protected padraoTipoPessoa = true;
-  protected statusEnvioFormulario = false;
   protected servicoEscolhido = false;
   protected ativo = [false, false, false];
 
@@ -68,7 +70,8 @@ export class OrcamentoComponent implements OnInit, OnDestroy {
 
   constructor(
     private http: OrcamentoService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private modalService: BsModalService
     ) { }
 
   ngOnInit() {
@@ -102,7 +105,9 @@ export class OrcamentoComponent implements OnInit, OnDestroy {
         }
       },
       (erro) => {
-        console.log('Não pode conectar, verifique sua conexão com a internet e tente novamente');
+        this.snackBar.open('Não pode conectar, verifique sua conexão com a internet e tente novamente', 'Fechar', {
+          duration: 60000,
+        });
       },
       () => {
         console.log('Carregado com sucesso!');
@@ -124,7 +129,6 @@ export class OrcamentoComponent implements OnInit, OnDestroy {
     }
   }
 
-
   adicionaMaisTelefoneFixo() {
     this.formularioCliente.telefoneFixo.push(null);
   }
@@ -138,46 +142,98 @@ export class OrcamentoComponent implements OnInit, OnDestroy {
 
   escolhaSegmento(segmento: string) {
     this.formularioCliente.segmento = segmento;
-    console.log(this.formularioCliente.segmento);
   }
   escolhaTipoServico(servico: string) {
     this.formularioCliente.servicoEscolhido = servico;
     this.servicoEscolhido = true;
   }
-  ativaOpcao(indice: number) {
+  ativaServicoEscolhido(indice: number) {
     this.ativo[indice] = true;
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.ativo.length; i++) {
       if (this.ativo[i] !== this.ativo[indice]) {
         this.ativo[i] = false;
+        console.log(this.ativo[i]);
       }
+      console.log(this.ativo);
     }
   }
-  testando() {
-    console.log(this.formularioCliente);
-  }
 
-  enviaFormulario() {
+  validarEmail(email: string): boolean {
+    const exclude = '/[^@-.w]|^[_@.-]|[._-]{2}|[@.]{2}|(@)[^@]*1/';
+    const check = '/@[w-]+./';
+    const checkend = '/.[a-zA-Z]{2,3}$/';
+    if (email.search(exclude) != -1 || email.search(check) == -1 || email.search(checkend) == -1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  enviaFormulario(mensagemModal: any) {
     if (this.padraoTipoPessoa === true) {
       this.formularioCliente.tipoPessoa.tipo = 'cnpj';
     } else {
       this.formularioCliente.tipoPessoa.tipo = 'cpf';
     }
-    const docs = { formularioCliente: this.formularioCliente };
 
-    this.inscricao = this.http.setOrcamentoClienteAll(docs).subscribe(
-      (resolve) => {
-        this.statusEnvioFormulario = true;
-        setTimeout(() => {
-          this.statusEnvioFormulario = false;
-        }, 7000);
-      },
-      (erro) => {
-        this.statusEnvioFormulario = false;
-      },
-      () => {
-        console.log('Cliente cadastrado com sucesso!');
-      }
-    );
+    if (this.formularioCliente.nome != '' && this.formularioCliente.email != '') {
+      /*if (this.validarEmail == true) {
+        VALIDAR EMAIL E SO DEPOIS EXECUTAR OQUE TEM ABAIXO
+      } ELSE {
+        EXECUTAR O MODAL INFORMANDO DOS CAMPOS OBRIGATORIOS
+      }*/
+      const docs = { formularioCliente: this.formularioCliente };
+
+      this.inscricao = this.http.setOrcamentoClienteAll(docs).subscribe(
+        (resolve) => {
+          this.http.getOrcamentoAll().subscribe(
+            (responseMensagemSucesso) => {
+              const dados = responseMensagemSucesso[0];
+
+              this.mensagemDeSucesso = dados.mensagemDeSucesso;
+            }
+          );
+          this.abrirModal(mensagemModal);
+          this.formularioCliente = {
+            nome: '',
+            email: '',
+            telefoneFixo: [null],
+            celular: [null],
+            empresa: '',
+            tipoPessoa: {
+              tipo: '',
+              numero: '',
+            },
+            segmento: '',
+            servicoEscolhido: '',
+            detalhamento: {
+              largura: Number(null),
+              altura: Number(null),
+              quantidade: Number(null),
+              cor: String('#ffffff'),
+              mensagem: String(''),
+              anexo: String(),
+            }
+          };
+        },
+        (erro) => {
+          this.mensagemDeSucesso.titulo = 'Mensagem NÃO enviada!';
+          this.mensagemDeSucesso.subtitulo = 'Verifique sua conexão com a internet e tente novamente!';
+          this.abrirModal(mensagemModal);
+        },
+        () => {
+          console.log('Pedido cadastrado com sucesso!');
+        }
+      );
+    } else {
+      this.mensagemDeSucesso.titulo = 'Mensagem NÃO enviada!';
+      this.mensagemDeSucesso.subtitulo = 'Preencha corretamente os campos obrigatórios e tente novamente';
+      this.abrirModal(mensagemModal)
+    }
+  }
+  abrirModal(template: TemplateRef<any>) {
+    this.mensagemDeSucesso.titulo = 'Mensagem NÃO enviada!';
+    this.mensagemDeSucesso.subtitulo = 'Preencha corretamente os campos obrigatórios e tente novamente';
+    this.modalRef = this.modalService.show(template);
   }
 }

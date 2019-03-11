@@ -1,5 +1,3 @@
-<section>
-
 <!--Formulario da pagina-->
 <section class="flex-container">
   <h1>{{ formulario.titulo }}</h1>
@@ -7,17 +5,17 @@
 
   <br />
 
-  <article *ngIf="statusEnvioFormulario === false; else formEnvioSucesso">
+  <article>
     <input
       type="text"
-      placeholder="Nome"
+      placeholder="Nome *obrigatório"
       [(ngModel)]="formularioCliente.nome"
       class="inputs"
       required
     />
     <input
       type="email"
-      placeholder="Email"
+      placeholder="Email *obrigatório"
       [(ngModel)]="formularioCliente.email"
       class="inputs"
       required
@@ -46,7 +44,6 @@
       placeholder="Celular - Preferência Whatsapp"
       [(ngModel)]="formularioCliente.celular[i]"
       class="inputs"
-      required
     />
     <button (click)="adicionaMaisCelular()" class="btn btn-primary">
       Incluir outro celular
@@ -112,7 +109,8 @@
         </ul>
       </div>
     </div>
-    espelhar a escolha aqui
+    <br/>
+    segmento escolhido: {{ formularioCliente.segmento }}
 
     <hr />
 
@@ -171,6 +169,7 @@
 
       <p>Observações</p>
       <textarea
+        placeholder="Insira aqui qualquer detalhe pertinente ao pedido"
         [(ngModel)]="formularioCliente.detalhamento.mensagem"
       ></textarea>
 
@@ -184,23 +183,34 @@
             [(ngModel)]="formularioCliente.detalhamento.anexo"
           />
           <br />
-          espelhar o caminho do arquivo selecionado aqui
+          Anexo: {{ formularioCliente.detalhamento.anexo }}
         </div>
       </div>
     </article>
 
     <hr />
 
-    <button (click)="enviaFormulario(); testando()" class="btn btn-primary">
+    <button (click)="enviaFormulario(mensagemModal)" class="btn btn-primary">
       Enviar pedido de orçamento
     </button>
   </article>
-
-  <!--Elemento de confirmação do envio do formulário-->
-  <ng-template #formEnvioSucesso>
-      <alert type="success" style="width: 100%">
-        <h3>{{ mensagemDeSucesso.titulo }}</h3>
-          <p>{{ mensagemDeSucesso.subtitulo }}</p>
-        </alert>
-  </ng-template>
 </section>
+
+<ng-template #mensagemModal style="margin-bottom: 0;">
+    <alert type="success">
+    <div class="modal-header">
+      <h4 class="modal-title pull-center">{{ mensagemDeSucesso.titulo }}</h4>
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="modalRef.hide()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>{{ mensagemDeSucesso.subtitulo }}</p>
+    </div>
+  </alert>
+  </ng-template>

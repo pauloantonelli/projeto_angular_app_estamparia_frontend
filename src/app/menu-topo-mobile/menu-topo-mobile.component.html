@@ -13,7 +13,12 @@
       class="flex-container-mobile"
       [style.display]="menuMobile ? 'block' : 'none'"
     >
-      <img class="logo" src="{{ logo }}" alt="logo estamparia pegadas" />
+      <img
+        [routerLink]="['/home']"
+        class="logo"
+        src="{{ logo }}"
+        alt="logo estamparia pegadas"
+        />
       <button
         *ngFor="let botao of menus.botoes; let i; of: index"
         class="navegacao-mobile"

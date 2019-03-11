@@ -2,10 +2,10 @@
   <h1>Fale Conosco</h1>
   <h2>Deixe sua mensagem</h2>
 
-  <article *ngIf="envio == false; else mensagemSucesso" class="flex-container">
+  <article class="flex-container">
     <input
       type="text"
-      placeholder="Nome"
+      placeholder="Nome *obrigatório"
       [(ngModel)]="mensagem.nome"
       class="inputs"
       required
@@ -13,7 +13,7 @@
 
     <input
       type="email"
-      placeholder="Email de contato"
+      placeholder="Email de contato *obrigatório"
       [(ngModel)]="mensagem.email"
       class="inputs"
       required
@@ -46,43 +46,23 @@
         class="inputs"
       />
     </div>
-
     <button (click)="mudaTipoPessoa()" class="botoes btn btn-primary">
       Trocar para {{ tipoPessoa.tipo }}
     </button>
 
     <textarea
-      placeholder="Mande sua mensagem para nosso email"
+      placeholder="Mande o que você precisa para gente! *obrigatório"
       [(ngModel)]="mensagem.corpoMensagem"
       class="inputs"
     ></textarea>
 
-    <button (click)="abrirModal(mensagemSucesso)" class="botoes btn btn-primary">
+    <button
+      (click)="enviarMensagem(mensagemModal)"
+      class="botoes btn btn-primary"
+    >
       Enviar Mensagem
     </button>
   </article>
-
-  <ng-template #mensagemSucesso>
-    <h2>Mensagem Enviada com sucesso</h2>
-    <p>Recebemos sua mensagem e logo entraremos em contato</p>
-  </ng-template>
-
-  <ng-template #mensagemSucesso>
-    <div class="modal-header">
-      <h4 class="modal-title pull-center">Mensagem Enviada com sucesso</h4>
-      <button
-        type="button"
-        class="close pull-right"
-        aria-label="Close"
-        (click)="modalRef.hide()"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <p>Recebemos sua mensagem e logo entraremos em contato</p>
-    </div>
-  </ng-template>
 </section>
 
 <br />
@@ -96,3 +76,22 @@
     allowfullscreen
   ></iframe>
 </section>
+
+<ng-template #mensagemModal>
+  <alert type="success">
+    <div class="modal-header">
+      <h4 class="modal-title pull-center">{{ mensagemDeSucesso.titulo }}</h4>
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="modalRef.hide()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>{{ mensagemDeSucesso.subtitulo }}</p>
+    </div>
+  </alert>
+</ng-template>
