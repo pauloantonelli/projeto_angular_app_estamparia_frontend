@@ -64,7 +64,7 @@ export class OrcamentoComponent implements OnInit, OnDestroy {
     this.inscricao = this.http.getOrcamentoAll().subscribe(
       (res) => {
       const dados = res[0];
-      console.log(dados);
+
       // painel de aviso
       this.aviso.ativo = dados.aviso.ativo;
       this.aviso.mensagem = dados.aviso.mensagem;

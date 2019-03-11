@@ -16,6 +16,11 @@ export class ContatoComponent implements OnInit, OnDestroy {
   protected envio = false;
   protected modalRef: BsModalRef;
 
+  protected tipoPessoa = {
+    estado: true,
+    tipo: '',
+  };
+
   // mensagem do cliente
   protected mensagem = {
     nome: '',
@@ -34,6 +39,14 @@ export class ContatoComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.inscricao.unsubscribe();
+  }
+  mudaTipoPessoa() {
+    this.tipoPessoa.estado = !this.tipoPessoa.estado;
+    if (this.tipoPessoa.estado) {
+      this.tipoPessoa.tipo = 'CNPJ';
+    } else {
+      this.tipoPessoa.tipo = 'CPF';
+    }
   }
   enviarMensagem() {
     const docs = { mensagem: this.mensagem };
