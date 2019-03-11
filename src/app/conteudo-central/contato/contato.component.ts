@@ -36,6 +36,7 @@ export class ContatoComponent implements OnInit, OnDestroy {
   constructor(private http: ContatoService, private modalService: BsModalService) {}
 
   ngOnInit() {
+    this.tipoPessoa.tipo = 'Pessoa Física';
   }
   ngOnDestroy(): void {
     this.inscricao.unsubscribe();
@@ -43,9 +44,9 @@ export class ContatoComponent implements OnInit, OnDestroy {
   mudaTipoPessoa() {
     this.tipoPessoa.estado = !this.tipoPessoa.estado;
     if (this.tipoPessoa.estado) {
-      this.tipoPessoa.tipo = 'CNPJ';
+      this.tipoPessoa.tipo = 'Pessoa Física';
     } else {
-      this.tipoPessoa.tipo = 'CPF';
+      this.tipoPessoa.tipo = 'Pessoa Juridica';
     }
   }
   enviarMensagem() {

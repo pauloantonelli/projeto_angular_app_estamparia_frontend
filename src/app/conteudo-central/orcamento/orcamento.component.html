@@ -1,14 +1,9 @@
-<!--Aviso-->
 <section>
-  <article *ngIf="aviso.ativo === true">
-    <p>{{ aviso.mensagem }}</p>
-  </article>
-</section>
 
 <!--Formulario da pagina-->
-<section>
+<section class="flex-container">
   <h1>{{ formulario.titulo }}</h1>
-  <h3>{{ formulario.descricao }}</h3>
+  <h2>{{ formulario.descricao }}</h2>
 
   <br />
 
@@ -17,12 +12,14 @@
       type="text"
       placeholder="Nome"
       [(ngModel)]="formularioCliente.nome"
+      class="inputs"
       required
     />
     <input
       type="email"
       placeholder="Email"
       [(ngModel)]="formularioCliente.email"
+      class="inputs"
       required
     />
     <input
@@ -34,8 +31,11 @@
       type="tel"
       placeholder="Telefone Fixo"
       [(ngModel)]="formularioCliente.telefoneFixo[i]"
+      class="inputs"
     />
-    <button (click)="adicionaMaisTelefoneFixo()">Outro Telefone</button>
+    <button (click)="adicionaMaisTelefoneFixo()" class="btn btn-primary">
+      Incluir outro telefone fixo
+    </button>
     <input
       *ngFor="
         let numero of formularioCliente.celular;
@@ -45,109 +45,162 @@
       type="tel"
       placeholder="Celular - Preferência Whatsapp"
       [(ngModel)]="formularioCliente.celular[i]"
+      class="inputs"
       required
     />
-    <button (click)="adicionaMaisCelular()">Outro Celular</button>
-    <input
-      type="text"
-      placeholder="Empresa"
-      [(ngModel)]="formularioCliente.empresa"
-    />
-    <p>Fisica</p>
-    <button mat-button color="primary" (click)="trocaTipoPessoa()">
-      Pessoa fisica ou juridica?
+    <button (click)="adicionaMaisCelular()" class="btn btn-primary">
+      Incluir outro celular
     </button>
-    <p>Juridica *DEFINIR COMO PREFERIDO NO SLIDER TOOGLE</p>
-    <input
-      *ngIf="padraoTipoPessoa === false"
-      type="text"
-      placeholder="CPF"
-      [(ngModel)]="formularioCliente.tipoPessoa.numero"
-    />
-    <input
-      *ngIf="padraoTipoPessoa === true"
-      type="text"
-      placeholder="CNPJ"
-      [(ngModel)]="formularioCliente.tipoPessoa.numero"
-    />
-    <select>
-      <option>Segmento</option>
-      <option
-        *ngFor="let escolha of segmento"
-        (click)="escolhaSegmento(escolha)"
-        >{{ escolha }}</option
+
+    <hr />
+
+    <div *ngIf="!tipoPessoa.estado">
+      <p>Pessoa Fisica</p>
+      <input
+        type="number"
+        placeholder="CPF"
+        [(ngModel)]="formularioCliente.tipoPessoa.numero"
+        class="inputs"
+      />
+    </div>
+
+    <div *ngIf="tipoPessoa.estado">
+      <p>Pessoa Jurídica</p>
+      <input
+        type="number"
+        placeholder="CNPJ"
+        [(ngModel)]="formularioCliente.tipoPessoa.numero"
+        class="inputs"
+      />
+    </div>
+    <button (click)="mudaTipoPessoa()" class="botoes btn btn-primary">
+      Trocar para {{ tipoPessoa.tipo }}
+    </button>
+
+    <hr />
+
+    <h2>Escolha o segmento</h2>
+    <div class="btn-group" dropdown>
+      <button
+        id="button-basic"
+        dropdownToggle
+        type="button"
+        class="btn btn-primary dropdown-toggle"
+        aria-controls="dropdown-basic"
       >
-    </select>
+        Segmento
+        <span class="caret"></span>
+      </button>
 
-    <br />
+      <div>
+        <ul
+          id="dropdown-basic"
+          *dropdownMenu
+          class="dropdown-menu"
+          role="menu"
+          aria-labelledby="button-basic"
+        >
+          <li *ngFor="let escolha of segmento" role="menuitem">
+            <hr class="divider dropdown-divider" />
+            <a
+              class="dropdown-item"
+              (click)="escolhaSegmento(escolha)"
+              style="cursor: pointer"
+              >{{ escolha }}</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+    espelhar a escolha aqui
 
-    <article>
-      <h2>{{ formulario.servicos.titulo }}</h2>
+    <hr />
+
+    <h2>{{ formulario.servicos.titulo }}</h2>
+    <div class="rowEscolhaServico">
       <div
         *ngFor="
           let titulo of formulario.servicos.tiposDeServicos;
           let i = index
         "
+        class="columnEscolhaServico"
       >
-        <h4>{{ formulario.servicos.tiposDeServicos[i] }}</h4>
-        <div>
-          <img
-            (click)="escolhaTipoServico(titulo); ativaOpcao(i)"
-            [class.escolhaServicos]="ativo[i]"
-            [class.servicoDisponivel]="!ativo[i]"
-            style="cursor: pointer"
-            src="{{ formulario.servicos.imagens[i] }}"
-            alt=""
-            width="20%"
+        <img src="{{ formulario.servicos.imagens[i] }}" style="width:100%" />
+        <h4 class="teste2">{{ formulario.servicos.tiposDeServicos[i] }}</h4>
+      </div>
+    </div>
+
+    <br />
+
+    <article class="rowDetalhamentoTecnico">
+      <h2>Detalhamento técnico da estampa</h2>
+
+      <div class="columnDetalhamentoTecnico">
+        <p>Largura (Metros)</p>
+        <input
+          type="number"
+          [(ngModel)]="formularioCliente.detalhamento.largura"
+        />
+      </div>
+
+      <div class="columnDetalhamentoTecnico">
+        <p>Altura (Metros)</p>
+        <input
+          type="number"
+          [(ngModel)]="formularioCliente.detalhamento.altura"
+        />
+      </div>
+
+      <div class="columnDetalhamentoTecnico">
+        <p>Pedido minimo</p>
+        <input
+          type="number"
+          min="300"
+          [(ngModel)]="formularioCliente.detalhamento.quantidade"
+        />
+      </div>
+
+      <div class="columnDetalhamentoTecnico">
+        <p>Escolha a Cor</p>
+        <input
+          type="color"
+          value="000000"
+          [(ngModel)]="formularioCliente.detalhamento.cor"
+        />
+      </div>
+
+      <p>Observações</p>
+      <textarea
+        [(ngModel)]="formularioCliente.detalhamento.mensagem"
+      ></textarea>
+
+      <div class="rowenvioArquivo">
+        <p>Anexar refêrencia da estampa</p>
+        <div class="columnenvioArquivo">
+          <label for="selecao-arquivo">Selecionar um arquivo &#187;</label>
+          <input
+            id="selecao-arquivo"
+            type="file"
+            [(ngModel)]="formularioCliente.detalhamento.anexo"
           />
+          <br />
+          espelhar o caminho do arquivo selecionado aqui
         </div>
       </div>
     </article>
 
-    <br />
+    <hr />
 
-    <article>
-      <h2>Detalhamento técnico da estampa</h2>
-      <p>Largura (Metros)</p>
-      <input
-        type="number"
-        [(ngModel)]="formularioCliente.detalhamento.largura"
-      />
-      <p>Altura (Metros)</p>
-      <input
-        type="number"
-        [(ngModel)]="formularioCliente.detalhamento.altura"
-      />
-      <p>Quantidade pedido minimo</p>
-      <input
-        type="number"
-        min="300"
-        [(ngModel)]="formularioCliente.detalhamento.quantidade"
-      />
-      <p>Cor</p>
-      <input
-        type="color"
-        value="000000"
-        [(ngModel)]="formularioCliente.detalhamento.cor"
-      />
-      <p>Mensagem</p>
-      <textarea
-        [(ngModel)]="formularioCliente.detalhamento.mensagem"
-      ></textarea>
-      <p>Anexar refêrencia da estampa</p>
-      <input type="file" [(ngModel)]="formularioCliente.detalhamento.anexo" />
-    </article>
-
-    <br />
-
-    <button mat-button color="primary" (click)="enviaFormulario(); testando()">
+    <button (click)="enviaFormulario(); testando()" class="btn btn-primary">
       Enviar pedido de orçamento
     </button>
   </article>
 
   <!--Elemento de confirmação do envio do formulário-->
   <ng-template #formEnvioSucesso>
-    <h3>{{ mensagemDeSucesso.titulo }}</h3>
-    <p>{{ mensagemDeSucesso.subtitulo }}</p>
+      <alert type="success" style="width: 100%">
+        <h3>{{ mensagemDeSucesso.titulo }}</h3>
+          <p>{{ mensagemDeSucesso.subtitulo }}</p>
+        </alert>
   </ng-template>
 </section>

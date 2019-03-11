@@ -1,10 +1,132 @@
-.servicoEscolhido {
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+/*comeco corpo contato*/
+.flex-container {
+  display: flex;
+  flex-wrap:  wrap;
+  text-align: center;
+}
+h1 {
+  font-weight: bolder;
+  text-align: center;
+  width: 100%;
+}
+h2 {
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+}
+.inputs {
+  width: 95%;
+  margin: 10px 0;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.rowEscolhaServico {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.rowEscolhaServico h2{
+  text-align: center;
+}
+.columnEscolhaServico {
+  flex: 20%;
+  max-width: 100%;
+  padding: 0 20px;
+}
+.columnEscolhaServico img {
+  margin-top: 8px;
+  vertical-align: middle;
+}
+@media screen and (max-width: 768px) {
+  .columnEscolhaServico {
+    flex: 100%;
+    max-width: 100%;
+  }
+}
+.columnEscolhaServico img {
   border-style: solid;
   border-radius: 5px;
   border-color: red;
 }
-.servicoDisponivel {
+.columnEscolhaServico img {
   border-style: solid;
   border-radius: 1px;
   border-color: black;
+}
+
+.rowDetalhamentoTecnico {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.rowDetalhamentoTecnico h2{
+  text-align: center;
+}
+.columnDetalhamentoTecnico {
+  flex: 20%;
+  max-width: 100%;
+  padding: 0 20px;
+}
+.columnDetalhamentoTecnico p{
+  margin-top: 8px;
+  text-align: center;
+  vertical-align: middle;
+}
+.columnDetalhamentoTecnico > input{
+  margin-top: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+p {
+  width: 100%;
+  margin: 10px 0 5px 0;
+  text-align: center;
+}
+textarea {
+  width: 100%;
+  margin: 5px 20px;
+  text-align: center;
+}
+
+.rowenvioArquivo {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.columnenvioArquivo {
+  flex: 20%;
+  max-width: 100%;
+  padding: 0 20px;
+}
+input[type='file'] {
+  display: none;
+}
+label {
+  background-color: #007bff;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  margin: 10px;
+  padding: 6px 20px
+}
+
+@media screen and (max-width: 768px) {
+  .columnDetalhamentoTecnico {
+    flex: 100%;
+    max-width: 100%;
+  }
 }

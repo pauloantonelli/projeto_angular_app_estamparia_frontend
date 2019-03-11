@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { OrcamentoService } from 'src/app/shared/services/orcamento/orcamento.service';
 import { Subscription } from 'rxjs';
+
+import { MatSnackBar } from '@angular/material';
+
+import { OrcamentoService } from 'src/app/shared/services/orcamento/orcamento.service';
 
 @Component({
   selector: 'app-orcamento',
@@ -14,6 +17,11 @@ export class OrcamentoComponent implements OnInit, OnDestroy {
   protected statusEnvioFormulario = false;
   protected servicoEscolhido = false;
   protected ativo = [false, false, false];
+
+  protected tipoPessoa = {
+    estado: true,
+    tipo: '',
+  };
 
   // painel de aviso
   protected aviso = {
@@ -58,31 +66,40 @@ export class OrcamentoComponent implements OnInit, OnDestroy {
     }
   };
 
-  constructor(private http: OrcamentoService) { }
+  constructor(
+    private http: OrcamentoService,
+    private snackBar: MatSnackBar
+    ) { }
 
   ngOnInit() {
     this.inscricao = this.http.getOrcamentoAll().subscribe(
       (res) => {
-      const dados = res[0];
+        const dados = res[0];
 
-      // painel de aviso
-      this.aviso.ativo = dados.aviso.ativo;
-      this.aviso.mensagem = dados.aviso.mensagem;
+        // painel de aviso
+        this.aviso.ativo = dados.aviso.ativo;
+        this.aviso.mensagem = dados.aviso.mensagem;
 
-      // campos e detalhes do formulário de orcamento
-      this.formulario.titulo = dados.formulario.titulo;
-      this.formulario.descricao = dados.formulario.descricao;
-      this.formulario.servicos.titulo = dados.formulario.servicos.titulo;
-      this.formulario.servicos.tiposDeServicos = dados.formulario.servicos.tiposDeServicos;
-      this.formulario.servicos.imagens = dados.formulario.servicos.imagens;
+        // campos e detalhes do formulário de orcamento
+        this.formulario.titulo = dados.formulario.titulo;
+        this.formulario.descricao = dados.formulario.descricao;
+        this.formulario.servicos.titulo = dados.formulario.servicos.titulo;
+        this.formulario.servicos.tiposDeServicos = dados.formulario.servicos.tiposDeServicos;
+        this.formulario.servicos.imagens = dados.formulario.servicos.imagens;
 
-      this.mensagemDeSucesso = dados.mensagemDeSucesso;
+        this.mensagemDeSucesso = dados.mensagemDeSucesso;
 
-      // combo-box de segmentos do formulario
-      this.segmento = dados.segmento;
+        // combo-box de segmentos do formulario
+        this.segmento = dados.segmento;
 
-      this.adicionaMaisTelefoneFixo();
-      this.adicionaMaisCelular();
+        this.adicionaMaisTelefoneFixo();
+        this.adicionaMaisCelular();
+
+        if (this.aviso.ativo) {
+          this.snackBar.open(this.aviso.mensagem, 'Fechar', {
+            duration: 60000,
+          });
+        }
       },
       (erro) => {
         console.log('Não pode conectar, verifique sua conexão com a internet e tente novamente');
@@ -98,6 +115,15 @@ export class OrcamentoComponent implements OnInit, OnDestroy {
   trackByIndex(index: number): any {
     return index;
   }
+  mudaTipoPessoa() {
+    this.tipoPessoa.estado = !this.tipoPessoa.estado;
+    if (this.tipoPessoa.estado) {
+      this.tipoPessoa.tipo = 'Pessoa Física';
+    } else {
+      this.tipoPessoa.tipo = 'Pessoa Juridica';
+    }
+  }
+
 
   adicionaMaisTelefoneFixo() {
     this.formularioCliente.telefoneFixo.push(null);
@@ -112,7 +138,7 @@ export class OrcamentoComponent implements OnInit, OnDestroy {
 
   escolhaSegmento(segmento: string) {
     this.formularioCliente.segmento = segmento;
-    console.log(this.formularioCliente.segmento); // concertar
+    console.log(this.formularioCliente.segmento);
   }
   escolhaTipoServico(servico: string) {
     this.formularioCliente.servicoEscolhido = servico;

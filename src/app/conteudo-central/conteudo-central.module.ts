@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ModalModule } from 'ngx-bootstrap';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { AlertModule } from 'ngx-bootstrap/alert';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
@@ -28,6 +30,8 @@ import { SublimacaoComponent } from './sublimacao/sublimacao.component';
     CarouselModule.forRoot(),
     ModalModule.forRoot(),
     ButtonsModule.forRoot(),
+    BsDropdownModule.forRoot(),
+    AlertModule.forRoot(),
     MatSnackBarModule,
   ],
   exports: [
