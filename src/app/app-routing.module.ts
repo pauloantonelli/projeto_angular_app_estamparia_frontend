@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ConteudoCentralComponent } from './conteudo-central/conteudo-central.component';
 
 const routes: Routes = [
-  { path: 'home', component: ConteudoCentralComponent },
+  { path: '', component: ConteudoCentralComponent },
 ];
 
 @NgModule({

@@ -17,6 +17,9 @@ export class ContatoComponent implements OnInit, OnDestroy {
   protected inscricao: Subscription;
   protected modalRef: BsModalRef;
 
+  protected emailValido: boolean;
+  protected emailValidoMessage = false;
+
   protected mensagemDeSucesso = {
     titulo: '',
     subtitulo: '',
@@ -43,7 +46,8 @@ export class ContatoComponent implements OnInit, OnDestroy {
     private http: ContatoService,
     private recuperaMensagemSucessoServidor: OrcamentoService,
     private snackBar: MatSnackBar,
-    private modalService: BsModalService) {}
+    private modalService: BsModalService) {
+    }
 
   ngOnInit() {
     this.tipoPessoa.tipo = 'Pessoa Física';
@@ -74,6 +78,36 @@ export class ContatoComponent implements OnInit, OnDestroy {
       this.tipoPessoa.tipo = 'Pessoa Juridica';
     }
   }
+
+  validarEmail(email: string) {
+    const usuario = email.substring(0, email.indexOf('@'));
+    const dominio = email.substring(email.indexOf('@') + 1, email.length);
+
+    if (
+      usuario.length >= 1 &&
+      dominio.length >= 3 &&
+      usuario.search('@') == -1 &&
+      dominio.search('@') == -1 &&
+      usuario.search(' ') == -1 &&
+      dominio.search(' ') == -1 &&
+      dominio.search('.') != -1 &&
+      dominio.indexOf('.') >= 1 &&
+      dominio.lastIndexOf('.') < dominio.length - 1
+      ) {
+        this.emailValido = true;
+        this.emailValidoMessage = true;
+        setTimeout(() => {
+          this.emailValidoMessage = false;
+        }, 5000);
+      } else {
+        this.emailValido = false;
+        this.emailValidoMessage = true;
+        setTimeout(() => {
+          this.emailValidoMessage = false;
+        }, 5000);
+      }
+  }
+
   enviarMensagem(mensagemModal: any) {
     if (this.tipoPessoa.estado === true) {
       this.tipoPessoa.tipo = 'cnpj';
@@ -81,16 +115,23 @@ export class ContatoComponent implements OnInit, OnDestroy {
       this.tipoPessoa.tipo = 'cpf';
     }
 
-    if (this.mensagem.nome != '' && this.mensagem.email != '') {
-      /*if (this.validarEmail == true) {
-        VALIDAR EMAIL E SO DEPOIS EXECUTAR OQUE TEM ABAIXO
-      } ELSE {
-        EXECUTAR O MODAL INFORMANDO DOS CAMPOS OBRIGATORIOS
-      }*/
-    const docs = { mensagem: this.mensagem };
+    if (this.mensagem.nome.length >= 3 &&
+      this.mensagem.corpoMensagem.length >= 10 &&
+      this.emailValido === true) {
 
-    this.inscricao = this.http.setNovaMensagem(docs).subscribe(
+      const docs = { mensagem: this.mensagem };
+
+      this.inscricao = this.http.setNovaMensagem(docs).subscribe(
       (response) => {
+
+        this.recuperaMensagemSucessoServidor.getOrcamentoAll().subscribe(
+          (responseMensagemSucesso) => {
+            const dados = responseMensagemSucesso[0];
+
+            this.mensagemDeSucesso = dados.mensagemDeSucesso;
+          }
+        );
+
         this.abrirModal(mensagemModal);
         this.mensagem = {
           nome: '',
@@ -115,9 +156,10 @@ export class ContatoComponent implements OnInit, OnDestroy {
     } else {
       this.mensagemDeSucesso.titulo = 'Mensagem NÃO enviada!';
       this.mensagemDeSucesso.subtitulo = 'Preencha corretamente os campos obrigatórios e tente novamente';
-      this.abrirModal(mensagemModal)
+      this.abrirModal(mensagemModal);
     }
   }
+
   abrirModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }

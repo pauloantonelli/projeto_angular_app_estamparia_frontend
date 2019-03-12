@@ -2,18 +2,19 @@
   <article>
     <div class="flex-container">
       <img
-        [routerLink]="['/home']"
+        [routerLink]="['/']"
         class="logo"
         src="{{ logo }}"
         alt="logo estamparia pegadas"
         style="cursor: pointer"/>
       <button
-        *ngFor="let botao of menus.botoes; let i; of: index"
+        *ngFor="let link of menus.links;
+        let i = index"
         class="navegacao"
         mat-button
-        [routerLink]="botao"
+        [routerLink]="link"
       >
-        {{ botao }}
+        {{ menus.botoes[i] }}
       </button>
     </div>
   </article>

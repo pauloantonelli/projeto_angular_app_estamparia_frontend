@@ -15,9 +15,17 @@
       type="email"
       placeholder="Email de contato *obrigatório"
       [(ngModel)]="mensagem.email"
+      (blur)="validarEmail(mensagem.email)"
       class="inputs"
       required
     />
+    <alert
+      *ngIf="emailValidoMessage"
+      [type]="emailValido ? 'success' : 'danger'"
+    >
+      <strong>email {{ emailValido ? "valido" : "invalido" }}</strong>
+      {{ emailValido ? "Tudo ok" : "Digite um email valido" }}
+    </alert>
 
     <input
       type="tel"
@@ -46,7 +54,7 @@
         class="inputs"
       />
     </div>
-    <button (click)="mudaTipoPessoa()" class="botoes btn btn-primary">
+    <button (click)="mudaTipoPessoa()" class="botoes btn btn-info">
       Trocar para {{ tipoPessoa.tipo }}
     </button>
 
@@ -54,27 +62,25 @@
       placeholder="Mande o que você precisa para gente! *obrigatório"
       [(ngModel)]="mensagem.corpoMensagem"
       class="inputs"
+      required
     ></textarea>
 
-    <button
-      (click)="enviarMensagem(mensagemModal)"
-      class="botoes btn btn-primary"
-    >
+    <button (click)="enviarMensagem(mensagemModal)" class="botoes btn btn-info">
       Enviar Mensagem
     </button>
   </article>
-</section>
 
-<br />
+  <br />
 
-<section>
-  <iframe
-    id="maps"
-    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.006362337198!2d-46.76975134888082!3d-23.604104768983305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce5447f9873843%3A0x66e114df6c685ff4!2sR.+Vit%C3%B3rio+D&#39;amico+-+Jardim+Monte+Alegre%2C+Tabo%C3%A3o+da+Serra+-+SP%2C+05576-100!5e0!3m2!1spt-BR!2sbr!4v1550127533329"
-    frameborder="0"
-    style="border:0"
-    allowfullscreen
-  ></iframe>
+  <article>
+    <iframe
+      id="maps"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.006362337198!2d-46.76975134888082!3d-23.604104768983305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce5447f9873843%3A0x66e114df6c685ff4!2sR.+Vit%C3%B3rio+D&#39;amico+-+Jardim+Monte+Alegre%2C+Tabo%C3%A3o+da+Serra+-+SP%2C+05576-100!5e0!3m2!1spt-BR!2sbr!4v1550127533329"
+      frameborder="0"
+      style="border:0"
+      allowfullscreen
+    ></iframe>
+  </article>
 </section>
 
 <ng-template #mensagemModal>

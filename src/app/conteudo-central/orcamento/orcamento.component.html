@@ -17,9 +17,15 @@
       type="email"
       placeholder="Email *obrigatório"
       [(ngModel)]="formularioCliente.email"
+      (blur)="validarEmail(formularioCliente.email)"
       class="inputs"
       required
     />
+
+    <alert *ngIf="emailValidoMessage" [type]="emailValido ? 'success' : 'danger'">
+      <strong>email {{ emailValido ? 'valido' : 'invalido'}}</strong> {{ emailValido ? 'Tudo ok' : 'Digite um email valido'}}
+    </alert>
+
     <input
       *ngFor="
         let telefone of formularioCliente.telefoneFixo;
@@ -31,7 +37,7 @@
       [(ngModel)]="formularioCliente.telefoneFixo[i]"
       class="inputs"
     />
-    <button (click)="adicionaMaisTelefoneFixo()" class="btn btn-primary">
+    <button (click)="adicionaMaisTelefoneFixo()" class="btn btn-secondary">
       Incluir outro telefone fixo
     </button>
     <input
@@ -45,7 +51,7 @@
       [(ngModel)]="formularioCliente.celular[i]"
       class="inputs"
     />
-    <button (click)="adicionaMaisCelular()" class="btn btn-primary">
+    <button (click)="adicionaMaisCelular()" class="btn btn-secondary">
       Incluir outro celular
     </button>
 
@@ -70,7 +76,7 @@
         class="inputs"
       />
     </div>
-    <button (click)="mudaTipoPessoa()" class="botoes btn btn-primary">
+    <button (click)="mudaTipoPessoa()" class="botoes btn btn-secondary">
       Trocar para {{ tipoPessoa.tipo }}
     </button>
 
@@ -82,7 +88,7 @@
         id="button-basic"
         dropdownToggle
         type="button"
-        class="btn btn-primary dropdown-toggle"
+        class="btn btn-secondary dropdown-toggle"
         aria-controls="dropdown-basic"
       >
         Segmento
@@ -119,12 +125,20 @@
       <div
         *ngFor="
           let titulo of formulario.servicos.tiposDeServicos;
-          let i = index
+          let i = index,
+          trackBy: trackByIndex
         "
         class="columnEscolhaServico"
       >
-        <img src="{{ formulario.servicos.imagens[i] }}" style="width:100%" />
-        <h4 class="teste2">{{ formulario.servicos.tiposDeServicos[i] }}</h4>
+        <img
+          (click)="escolhaTipoServico(titulo, i)"
+          src="{{ formulario.servicos.imagens[i] }}"
+          [ngStyle]="{
+            'width': '100%',
+            'border-color': servicoEscolhido[i] ? 'blue' : '#6c757d'
+          }"
+        />
+        <h4>{{ formulario.servicos.tiposDeServicos[i] }}</h4>
       </div>
     </div>
 
@@ -190,7 +204,7 @@
 
     <hr />
 
-    <button (click)="enviaFormulario(mensagemModal)" class="btn btn-primary">
+    <button (click)="enviaFormulario(mensagemModal)" class="btn btn-secondary">
       Enviar pedido de orçamento
     </button>
   </article>

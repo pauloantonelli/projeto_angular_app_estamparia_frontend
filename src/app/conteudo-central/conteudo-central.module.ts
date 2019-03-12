@@ -21,7 +21,7 @@ import { SublimacaoComponent } from './sublimacao/sublimacao.component';
     ConteudoCentralComponent,
     ContatoComponent,
     OrcamentoComponent,
-    SublimacaoComponent
+    SublimacaoComponent,
   ],
   imports: [
     CommonModule,
@@ -35,7 +35,7 @@ import { SublimacaoComponent } from './sublimacao/sublimacao.component';
     MatSnackBarModule,
   ],
   exports: [
-    ConteudoCentralComponent
+    ConteudoCentralComponent,
   ]
 })
 export class ConteudoCentralModule { }

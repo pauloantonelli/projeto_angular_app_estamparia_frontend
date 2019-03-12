@@ -15,6 +15,7 @@ export class MenuTopoMobileComponent implements OnInit, OnDestroy {
     imagem: '',
   };
   protected menus = {
+    links: ['', 'sublimacao', 'orcamento', 'contato'],
     botoes: ['home', 'sublimacao', 'orcamento', 'contato'],
   };
   protected menuMobile: boolean;

@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { MatSnackBar } from '@angular/material';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+
+import { MatSnackBar } from '@angular/material';
 
 import { OrcamentoService } from 'src/app/shared/services/orcamento/orcamento.service';
 
@@ -17,8 +18,12 @@ export class OrcamentoComponent implements OnInit, OnDestroy {
   protected modalRef: BsModalRef;
 
   protected padraoTipoPessoa = true;
-  protected servicoEscolhido = false;
   protected ativo = [false, false, false];
+
+  protected emailValido: boolean;
+  protected emailValidoMessage = false;
+
+  protected servicoEscolhido: boolean[] = [];
 
   protected tipoPessoa = {
     estado: true,
@@ -143,31 +148,43 @@ export class OrcamentoComponent implements OnInit, OnDestroy {
   escolhaSegmento(segmento: string) {
     this.formularioCliente.segmento = segmento;
   }
-  escolhaTipoServico(servico: string) {
+
+  escolhaTipoServico(servico: string, escolhido: number) {
     this.formularioCliente.servicoEscolhido = servico;
-    this.servicoEscolhido = true;
-  }
-  ativaServicoEscolhido(indice: number) {
-    this.ativo[indice] = true;
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < this.ativo.length; i++) {
-      if (this.ativo[i] !== this.ativo[indice]) {
-        this.ativo[i] = false;
-        console.log(this.ativo[i]);
-      }
-      console.log(this.ativo);
+
+    for (let i = 0; i < this.formulario.servicos.imagens.length; i++) {
+        this.servicoEscolhido[i] = false;
     }
+    this.servicoEscolhido[escolhido] = true;
   }
 
-  validarEmail(email: string): boolean {
-    const exclude = '/[^@-.w]|^[_@.-]|[._-]{2}|[@.]{2}|(@)[^@]*1/';
-    const check = '/@[w-]+./';
-    const checkend = '/.[a-zA-Z]{2,3}$/';
-    if (email.search(exclude) != -1 || email.search(check) == -1 || email.search(checkend) == -1) {
-      return false;
-    } else {
-      return true;
-    }
+  validarEmail(email: string) {
+    const usuario = email.substring(0, email.indexOf('@'));
+    const dominio = email.substring(email.indexOf('@') + 1, email.length);
+
+    if (
+      usuario.length >= 1 &&
+      dominio.length >= 3 &&
+      usuario.search('@') == -1 &&
+      dominio.search('@') == -1 &&
+      usuario.search(' ') == -1 &&
+      dominio.search(' ') == -1 &&
+      dominio.search('.') != -1 &&
+      dominio.indexOf('.') >= 1 &&
+      dominio.lastIndexOf('.') < dominio.length - 1
+      ) {
+        this.emailValido = true;
+        this.emailValidoMessage = true;
+        setTimeout(() => {
+          this.emailValidoMessage = false;
+        }, 3000);
+      } else {
+        this.emailValido = false;
+        this.emailValidoMessage = true;
+        setTimeout(() => {
+          this.emailValidoMessage = false;
+        }, 3000);
+      }
   }
   enviaFormulario(mensagemModal: any) {
     if (this.padraoTipoPessoa === true) {
@@ -176,64 +193,58 @@ export class OrcamentoComponent implements OnInit, OnDestroy {
       this.formularioCliente.tipoPessoa.tipo = 'cpf';
     }
 
-    if (this.formularioCliente.nome != '' && this.formularioCliente.email != '') {
-      /*if (this.validarEmail == true) {
-        VALIDAR EMAIL E SO DEPOIS EXECUTAR OQUE TEM ABAIXO
-      } ELSE {
-        EXECUTAR O MODAL INFORMANDO DOS CAMPOS OBRIGATORIOS
-      }*/
-      const docs = { formularioCliente: this.formularioCliente };
+    if (this.formularioCliente.nome.length >= 3 && this.emailValido === true) {
 
-      this.inscricao = this.http.setOrcamentoClienteAll(docs).subscribe(
-        (resolve) => {
-          this.http.getOrcamentoAll().subscribe(
-            (responseMensagemSucesso) => {
-              const dados = responseMensagemSucesso[0];
+        const docs = { formularioCliente: this.formularioCliente };
 
-              this.mensagemDeSucesso = dados.mensagemDeSucesso;
-            }
-          );
-          this.abrirModal(mensagemModal);
-          this.formularioCliente = {
-            nome: '',
-            email: '',
-            telefoneFixo: [null],
-            celular: [null],
-            empresa: '',
-            tipoPessoa: {
-              tipo: '',
-              numero: '',
-            },
-            segmento: '',
-            servicoEscolhido: '',
-            detalhamento: {
-              largura: Number(null),
-              altura: Number(null),
-              quantidade: Number(null),
-              cor: String('#ffffff'),
-              mensagem: String(''),
-              anexo: String(),
-            }
-          };
-        },
-        (erro) => {
-          this.mensagemDeSucesso.titulo = 'Mensagem NÃO enviada!';
-          this.mensagemDeSucesso.subtitulo = 'Verifique sua conexão com a internet e tente novamente!';
-          this.abrirModal(mensagemModal);
-        },
-        () => {
-          console.log('Pedido cadastrado com sucesso!');
-        }
-      );
+        this.inscricao = this.http.setOrcamentoClienteAll(docs).subscribe(
+          (resolve) => {
+            this.http.getOrcamentoAll().subscribe(
+              (responseMensagemSucesso) => {
+                const dados = responseMensagemSucesso[0];
+
+                this.mensagemDeSucesso = dados.mensagemDeSucesso;
+              }
+            );
+            this.abrirModal(mensagemModal);
+            this.formularioCliente = {
+              nome: '',
+              email: '',
+              telefoneFixo: [null],
+              celular: [null],
+              empresa: '',
+              tipoPessoa: {
+                tipo: '',
+                numero: '',
+              },
+              segmento: '',
+              servicoEscolhido: '',
+              detalhamento: {
+                largura: Number(null),
+                altura: Number(null),
+                quantidade: Number(null),
+                cor: String('#ffffff'),
+                mensagem: String(''),
+                anexo: String(),
+              }
+            };
+          },
+          (erro) => {
+            this.mensagemDeSucesso.titulo = 'Mensagem NÃO enviada!';
+            this.mensagemDeSucesso.subtitulo = 'Verifique sua conexão com a internet e tente novamente!';
+            this.abrirModal(mensagemModal);
+          },
+          () => {
+            console.log('Pedido cadastrado com sucesso!');
+          }
+        );
     } else {
       this.mensagemDeSucesso.titulo = 'Mensagem NÃO enviada!';
-      this.mensagemDeSucesso.subtitulo = 'Preencha corretamente os campos obrigatórios e tente novamente';
+      this.mensagemDeSucesso.subtitulo = 'Preencha pelo menos os campos obrigatorios e tente novamente';
       this.abrirModal(mensagemModal)
     }
   }
   abrirModal(template: TemplateRef<any>) {
-    this.mensagemDeSucesso.titulo = 'Mensagem NÃO enviada!';
-    this.mensagemDeSucesso.subtitulo = 'Preencha corretamente os campos obrigatórios e tente novamente';
     this.modalRef = this.modalService.show(template);
   }
 }

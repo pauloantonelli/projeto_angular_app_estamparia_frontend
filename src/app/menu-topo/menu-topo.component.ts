@@ -15,15 +15,15 @@ export class MenuTopoComponent implements OnInit, OnDestroy {
     imagem: '',
   };
   protected menus = {
+    links: ['', 'sublimacao', 'orcamento', 'contato'],
     botoes: ['home', 'sublimacao', 'orcamento', 'contato'],
   };
 
-  constructor(private http: MenuService) {
-
-  }
+  constructor(private http: MenuService) { }
 
   ngOnInit() {
-    this.inscricao = this.http.getMenuAll().subscribe((res) => {
+    this.inscricao = this.http.getMenuAll().subscribe(
+      (res) => {
       const dados = res[0];
 
       this.logo = dados.logo.imagem;

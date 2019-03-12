@@ -1,5 +1,13 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<section>
+<div *ngIf="carregado === false">
+    <div class="mb-2">
+      <progressbar class="barraProgresso" [animate]="false" [value]="dynamic" type="success">
+        <b>Por favor aguarde... {{ dynamic }}%</b>
+      </progressbar>
+    </div>
+  </div>
+
+<section *ngIf="carregado === true">
   <app-menu-topo *ngIf="pc"></app-menu-topo>
   <app-menu-topo-mobile *ngIf="mobile"></app-menu-topo-mobile>
 

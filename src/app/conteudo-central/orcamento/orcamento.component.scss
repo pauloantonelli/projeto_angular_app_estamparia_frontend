@@ -52,16 +52,6 @@ h2 {
     max-width: 100%;
   }
 }
-.columnEscolhaServico img {
-  border-style: solid;
-  border-radius: 5px;
-  border-color: red;
-}
-.columnEscolhaServico img {
-  border-style: solid;
-  border-radius: 1px;
-  border-color: black;
-}
 
 .rowDetalhamentoTecnico {
   display: flex;
@@ -116,7 +106,7 @@ input[type='file'] {
   display: none;
 }
 label {
-  background-color: #007bff;
+  background-color: #6c757d;
   border-radius: 5px;
   color: #fff;
   cursor: pointer;
