@@ -26,6 +26,11 @@ h2 {
   font-size: 1.2rem;
   text-align: center;
 }
+.botoes {
+  width: 95%;
+  margin: 10px 0;
+  font-size: 1.2rem;
+}
 
 .rowEscolhaServico {
   display: flex;
@@ -33,8 +38,9 @@ h2 {
   width: 100%;
   margin: 0;
   padding: 0;
+  border-width: 10px;
 }
-.rowEscolhaServico h2{
+.rowEscolhaServico h4{
   text-align: center;
 }
 .columnEscolhaServico {
@@ -45,6 +51,7 @@ h2 {
 .columnEscolhaServico img {
   margin-top: 8px;
   vertical-align: middle;
+  border: 5px solid transparent;
 }
 @media screen and (max-width: 768px) {
   .columnEscolhaServico {
@@ -91,7 +98,7 @@ textarea {
 }
 
 .rowenvioArquivo {
-  display: flex;
+  display: none; //flex;
   flex-wrap: wrap;
   width: 100%;
   margin: 0;
@@ -106,7 +113,7 @@ input[type='file'] {
   display: none;
 }
 label {
-  background-color: #6c757d;
+  background-color: #17a2b8;
   border-radius: 5px;
   color: #fff;
   cursor: pointer;
