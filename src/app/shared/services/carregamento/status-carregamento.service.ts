@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { MenuService } from '../menu/menu.service';
 import { HomeService } from '../home/home.service';
 import { PreRodapeService } from '../pre-rodape/pre-rodape.service';
@@ -16,7 +17,19 @@ export class StatusCarregamentoService {
               private portifolio: PortifolioClientesService,
               private rodape: RodapeService,
     ) { }
-  getProgressoMenu() {
-   return this.menu.eventoCarregamentoMenu;
+  getProgressoMenu(): any {
+    return this.menu.eventoCarregamento;
+  }
+  getProgressoHome(): any {
+    return this.home.eventoCarregamento;
+  }
+  getProgressoPreRodape(): any {
+    return this.preRodape.eventoCarregamentoPreRodape;
+  }
+  getProgressoPortifolio(): any {
+    return this.portifolio.eventoCarregamento;
+  }
+  getProgressoRodape(): any {
+    return this.rodape.eventoCarregamento;
   }
 }

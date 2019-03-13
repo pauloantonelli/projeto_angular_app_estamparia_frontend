@@ -1,20 +1,30 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div *ngIf="carregado === false">
+<section
+  [style.display]="carregado ? 'none' : 'block'"
+  class="corpo-tela-carregamento"
+>
+  <div class="container-bar">
     <div class="mb-2">
-      <progressbar class="barraProgresso" [animate]="false" [value]="dynamic" type="success">
-        <b>Por favor aguarde... {{ dynamic }}%</b>
+      <progressbar
+        class="barraProgresso"
+        [animate]="false"
+        [value]="dynamic"
+        type="success"
+      >
+        <b>{{ dynamic }}%</b>
       </progressbar>
     </div>
   </div>
+</section>
 
-<section *ngIf="carregado === true">
+<section [style.display]="carregado ? 'block' : 'none'">
   <app-menu-topo *ngIf="pc"></app-menu-topo>
   <app-menu-topo-mobile *ngIf="mobile"></app-menu-topo-mobile>
 
   <router-outlet></router-outlet>
   <hr />
   <app-pre-rodape></app-pre-rodape>
-  <hr/>
+  <hr />
   <app-portifolio-clientes></app-portifolio-clientes>
   <hr />
   <app-rodape></app-rodape>

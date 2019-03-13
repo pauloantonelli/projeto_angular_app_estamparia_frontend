@@ -16,48 +16,59 @@ export class AppComponent implements OnInit, OnDestroy {
   protected mobile: boolean;
   protected pc: boolean;
 
-  protected dynamic: number;
+  protected dynamic = 0;
   protected type: string;
   protected carregado: boolean;
 
   constructor(private plataforma: DetectaPlataformaService, private carregamento: StatusCarregamentoService) {
-    this.barraCarregamento(1);
   }
   ngOnInit() {
     this.mobile = this.plataforma.mobile;
     this.pc = this.plataforma.pc;
-    this.barraCarregamento(3.3);
+    this.barraCarregamento(0);
 
+    // menu
     this.inscricao = this.carregamento.getProgressoMenu().subscribe(
       (response) => {
-        response.subscribe(
-          (responseCarregamentoMenu) => {
-            console.log(responseCarregamentoMenu);
-            this.barraCarregamento(6.3);
-          },
-          (erro) => {
-            this.barraCarregamento(9.3);
-          },
-          () => {
-            this.barraCarregamento(12.3);
-          }
-        );
-      },
-      (erro) => {
-        this.barraCarregamento(15.3);
-      },
-      () => {
-        this.barraCarregamento(18.3);
+        this.barraCarregamento(response);
       }
     );
 
+    // home
+    this.inscricao = this.carregamento.getProgressoHome().subscribe(
+      (response) => {
+        this.barraCarregamento(response);
+      }
+    );
+
+    // Pre Rodape
+    this.inscricao = this.carregamento.getProgressoPreRodape().subscribe(
+      (response) => {
+        this.barraCarregamento(response);
+      }
+    );
+
+    // Portifolio
+    this.inscricao = this.carregamento.getProgressoPortifolio().subscribe(
+      (response) => {
+        this.barraCarregamento(response);
+      }
+    );
+
+    // Rodape
+    this.inscricao = this.carregamento.getProgressoRodape().subscribe(
+      (response) => {
+        this.barraCarregamento(response);
+      }
+    );
   }
+
   ngOnDestroy() {
     this.inscricao.unsubscribe();
   }
 
   barraCarregamento(porcentagem: number): void {
-    const value = porcentagem;
+    const value = this.dynamic + porcentagem;
     let type: string;
 
     if (value < 25) {
@@ -71,10 +82,9 @@ export class AppComponent implements OnInit, OnDestroy {
       this.carregado = false;
     } else {
       type = 'danger';
-      this.carregado = false;
+      this.carregado = true;
     }
     this.dynamic = value;
     this.type = type;
   }
-
 }

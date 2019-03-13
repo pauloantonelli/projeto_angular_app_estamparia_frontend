@@ -11,6 +11,7 @@ import { MenuService } from '../shared/services/menu/menu.service';
 export class MenuTopoComponent implements OnInit, OnDestroy {
 
   protected inscricao: Subscription;
+
   protected logo = {
     imagem: '',
   };
